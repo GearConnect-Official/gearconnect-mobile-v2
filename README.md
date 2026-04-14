@@ -1,1 +1,0 @@
-# gearconnect-mobile-v2
