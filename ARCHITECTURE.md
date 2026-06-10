@@ -303,19 +303,43 @@ Pas besoin de connaître le nesting. Chaque écran a une URL unique et directe.
 
 Chaque dossier dans `src/components/` et `src/` a un `index.ts` pour des imports propres :
 
+- `@/*` pointe vers `src/*`
+- on n'utilise pas `@/src/...`
+- on importe plutôt `@/components/...`, `@/providers/...`, `@/utils/...`
+
 ```typescript
 // Plutôt que
 import { PostItem } from "@/src/components/feed/PostItem";
 
 // On fait
-import { PostItem } from "@/src/components/feed";
+import { PostItem } from "@/components/feed";
 ```
+
+### TypeScript alias
+
+En TypeScript 6+ / 7+, `baseUrl` est déprécié pour les projets qui utilisent `paths`.
+Dans `gearconnect-mobile-v2/tsconfig.json`, il faut donc supprimer `baseUrl` et laisser les entrées `paths` relatives au fichier de configuration :
+
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": [
+        "./src/*",
+        "./*"
+      ]
+    }
+  }
+}
+```
+
+Si vous aviez besoin d’un `baseUrl`, remplacez-le désormais en préfixant les chemins dans `paths` plutôt que de garder `baseUrl`.
 
 ### Structure d'un écran
 
 ```typescript
 // app/(app)/eventDetail.tsx
-import { EventDetailScreen } from "@/src/components/events";
+import { EventDetailScreen } from "@/components/events";
 
 export default function EventDetail() {
   return <EventDetailScreen />;
