@@ -1,31 +1,24 @@
-import { StyleSheet } from 'react-native';
+import { Pressable } from 'react-native';
+import { FontAwesome } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
 import { Text, View } from '@/components/Themed';
+import { styles } from '@/styles/home.styles';
 
 export default function TabOneScreen() {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
+      <Text style={styles.title}>Home</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
+
+      <Pressable style={styles.createButton} onPress={() => router.push('/publication')}>
+        <FontAwesome name="plus" size={16} color="#fff" />
+        <Text style={styles.createButtonText} lightColor="#fff" darkColor="#fff">
+          Créer un post
+        </Text>
+      </Pressable>
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});
