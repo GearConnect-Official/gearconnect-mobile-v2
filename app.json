@@ -30,7 +30,15 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Autoriser l'accès à tes photos pour publier.",
+          "cameraPermission": "Autoriser l'appareil photo pour publier."
+        }
+      ],
+      "expo-video"
     ],
     "experiments": {
       "typedRoutes": true
