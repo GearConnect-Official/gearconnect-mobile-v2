@@ -8,20 +8,11 @@ export interface SelectedMedia {
   height?: number;
 }
 
-/** Média après upload Cloudinary, prêt à être envoyé au backend. */
-export interface UploadedMedia {
-  url: string;
-  publicId: string;
-  type: MediaType;
-  width?: number;
-  height?: number;
-}
-
-/** Corps attendu par POST /posts. */
+/** Paramètres d'envoi à POST /posts (multipart : le back gère l'upload Cloudinary). */
 export interface CreatePostInput {
   body: string;
   userId: number;
-  media: UploadedMedia[];
+  media: SelectedMedia[];
 }
 
 /** Média tel que renvoyé par l'API. */

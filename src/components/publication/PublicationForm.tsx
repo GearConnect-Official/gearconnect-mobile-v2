@@ -7,7 +7,6 @@ import { useRouter } from 'expo-router';
 import { PostItem } from '@/components/feed';
 import { SelectedMedia } from '@/types/post.types';
 import { CurrentUser } from '@/types/user.types';
-import { uploadAll } from '@/services/cloudinary.service';
 import { createPost, getCurrentUser } from '@/services/api/postService';
 
 import { styles } from '@/styles/publicationForm.styles';
@@ -54,8 +53,7 @@ export default function PublicationForm() {
       if (!token) throw new Error('Session expirée, reconnecte-toi.');
 
       const userId = me?.id ?? (await getCurrentUser(token)).id;
-      const uploaded = await uploadAll(media);
-      await createPost({ body: description.trim(), userId, media: uploaded }, token);
+      await createPost({ body: description.trim(), userId, media }, token);
 
       router.replace('/(app)/(tabs)/home');
     } catch (e) {

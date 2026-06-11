@@ -1,5 +1,5 @@
 import { ENV } from '@/config/env';
-import { CreatePostInput, Post } from '@/types/post.types';
+import { CreatePostInput, Post, SelectedMedia } from '@/types/post.types';
 import { CurrentUser } from '@/types/user.types';
 
 const BASE = ENV.apiUrl;
@@ -20,15 +20,29 @@ export async function getCurrentUser(token: string): Promise<CurrentUser> {
   };
 }
 
-/** Crée un post. Le backend exige body + userId ; media est optionnel. */
+/** Construit l'objet fichier RN ({ uri, name, type }) attendu par FormData. */
+function toFormFile(media: SelectedMedia) {
+  const ext = media.uri.split('.').pop()?.split('?')[0]?.toLowerCase() ?? (media.type === 'VIDEO' ? 'mp4' : 'jpg');
+  const name = `upload.${ext}`;
+  const type = media.type === 'VIDEO' ? `video/${ext}` : `image/${ext === 'jpg' ? 'jpeg' : ext}`;
+  return { uri: media.uri, name, type };
+}
+
+/**
+ * Crée un post. Les fichiers sont envoyés en multipart au backend, qui les
+ * uploade lui-même vers Cloudinary (le front ne parle qu'à l'API).
+ */
 export async function createPost(input: CreatePostInput, token: string): Promise<Post> {
+  const form = new FormData();
+  form.append('body', input.body);
+  form.append('userId', String(input.userId));
+  input.media.forEach((m) => form.append('media', toFormFile(m) as any));
+
   const res = await fetch(`${BASE}/posts`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(input),
+    // Pas de Content-Type manuel : fetch ajoute le boundary multipart lui-même.
+    headers: { Authorization: `Bearer ${token}` },
+    body: form,
   });
   if (!res.ok) {
     const detail = await res.text();
