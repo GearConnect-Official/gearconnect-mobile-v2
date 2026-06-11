@@ -28,23 +28,25 @@ export function useRegisterForm() {
     if (!isValidUsername(username)) {
       setValidationError('Le pseudo doit contenir au moins 3 caractères');
       return;
-    } else if (!isValidEmail(email)) {
+    }
+    if (!isValidEmail(email)) {
       setValidationError('Email invalide');
       return;
-    } else if (!isValidPassword(password)) {
+    }
+    if (!isValidPassword(password)) {
       setValidationError('Le mot de passe doit contenir au moins 8 caractères');
       return;
-    } else {
-      setValidationError(undefined);
-
-      const { error: createError } = await signUp.create({ emailAddress: email, password });
-      if (createError) return;
-
-      const { error: sendError } = await signUp.verifications.sendEmailCode();
-      if (sendError) return;
-
-      setPendingVerification(true);
     }
+
+    setValidationError(undefined);
+
+    const { error: createError } = await signUp.create({ emailAddress: email, password });
+    if (createError) return;
+
+    const { error: sendError } = await signUp.verifications.sendEmailCode();
+    if (sendError) return;
+
+    setPendingVerification(true);
   }
 
   // Phase 2 : vérifier le code reçu, puis activer la session.
@@ -78,7 +80,7 @@ export function useRegisterForm() {
         }
 
         router.replace('/(app)/(tabs)/home');
-      } catch (error) {
+      } catch {
         setApiError('Network error, please try again');
       }
     }

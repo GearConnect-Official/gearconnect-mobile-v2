@@ -69,16 +69,16 @@ l'archi qui gagne — et il faut alors mettre à jour ce fichier, pas l'inverse.
 
 ## 2. Nommage des fichiers (rappel + extension d'ARCHITECTURE.md)
 
-| Type | Convention | Exemple |
-|---|---|---|
-| Ecrans (`app/`) | camelCase | `eventDetail.tsx` |
-| Composants (`src/components/`) | PascalCase | `PostItem.tsx` |
-| Hooks | camelCase avec `use` | `useLoginForm.ts` |
-| Services | camelCase avec `Service` | `eventService.ts` |
-| Types | camelCase avec `.types` | `event.types.ts` |
-| Styles | camelCase avec `.styles`, dans `src/styles/` | `header.styles.ts` |
-| Validation | camelCase avec `.validation`, dans le dossier de la feature | `auth.validation.ts` |
-| Tests | même nom que le fichier testé + `.test.ts` | `useLoginForm.test.ts` |
+| Type                           | Convention                                                  | Exemple                |
+| ------------------------------ | ----------------------------------------------------------- | ---------------------- |
+| Ecrans (`app/`)                | camelCase                                                   | `eventDetail.tsx`      |
+| Composants (`src/components/`) | PascalCase                                                  | `PostItem.tsx`         |
+| Hooks                          | camelCase avec `use`                                        | `useLoginForm.ts`      |
+| Services                       | camelCase avec `Service`                                    | `eventService.ts`      |
+| Types                          | camelCase avec `.types`                                     | `event.types.ts`       |
+| Styles                         | camelCase avec `.styles`, dans `src/styles/`                | `header.styles.ts`     |
+| Validation                     | camelCase avec `.validation`, dans le dossier de la feature | `auth.validation.ts`   |
+| Tests                          | même nom que le fichier testé + `.test.ts`                  | `useLoginForm.test.ts` |
 
 ```
 ❌ EventDetail.tsx              (écran dans app/, devrait être camelCase)
@@ -94,17 +94,25 @@ l'archi qui gagne — et il faut alors mettre à jour ce fichier, pas l'inverse.
 
 ---
 
-## 3. Formatage (en attendant Prettier/ESLint)
+## 3. Formatage
 
-Pas encore d'outil automatique configuré → ces règles sont à appliquer "à la
-main" et à vérifier en review.
+ESLint et Prettier sont configurés (`eslint.config.js`, `.prettierrc.json`).
+Avant de commit/ouvrir une PR :
+
+```bash
+npm run format   # corrige automatiquement indentation, quotes, points-virgules...
+npm run lint     # signale le reste (hooks, imports inutilisés, etc.)
+```
+
+Les règles ci-dessous sont donc appliquées automatiquement par ces outils,
+mais restent documentées pour comprendre _pourquoi_ le code est formaté ainsi.
 
 - **Indentation : 2 espaces.** Jamais de tabulations, jamais 4 espaces.
 
   ```typescript
   // ❌ 4 espaces
-  export function useLoginForm(){
-      const [email, setEmail] = useState('');
+  export function useLoginForm() {
+    const [email, setEmail] = useState('');
   }
 
   // ✅ 2 espaces
@@ -135,8 +143,8 @@ main" et à vérifier en review.
 
   ```typescript
   // ❌
-  import { View } from "react-native";
-  setError("Email invalide");
+  import { View } from 'react-native';
+  setError('Email invalide');
 
   // ✅
   import { View } from 'react-native';
@@ -168,7 +176,8 @@ main" et à vérifier en review.
   ```
 
 - **Early return** plutôt que `if / else if / else` en cascade pour des
-  validations successives :
+  validations successives (non corrigé automatiquement par Prettier/ESLint —
+  à vérifier en review) :
 
   ```typescript
   // ❌
@@ -194,8 +203,8 @@ main" et à vérifier en review.
   // ... suite, au même niveau d'indentation
   ```
 
-> Dès qu'ESLint/Prettier seront configurés, ce sont eux qui font foi —
-> ce chapitre disparaîtra au profit de `npm run lint`.
+> En cas de doute ou de conflit, c'est `npm run format` / `npm run lint` qui
+> font foi.
 
 ---
 
@@ -436,7 +445,7 @@ main" et à vérifier en review.
 
 - [ ] Le nouveau code respecte l'arborescence d'[ARCHITECTURE.md](ARCHITECTURE.md)
       (pas de dossier sauvage, pas de logique dans `app/`).
-- [ ] Indentation 2 espaces, points-virgules, guillemets simples.
+- [ ] `npm run format` et `npm run lint` passent sans erreur.
 - [ ] Composants : `interface Props` + commentaire JSDoc d'une ligne.
 - [ ] Styles dans `src/styles/`, valeurs via les design tokens.
 - [ ] Logique métier extraite dans un hook si le composant fait plus que de

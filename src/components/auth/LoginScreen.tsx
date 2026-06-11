@@ -1,9 +1,10 @@
 import { Image, Pressable, Text, TextInput, View } from 'react-native';
 import { Link } from 'expo-router';
 import { useLoginForm } from './useLoginForm';
-import { authStyles } from '../../styles/auth.styles';
+import { authStyles } from '@/styles/auth.styles';
 import { palette } from '@/styles/colors';
 
+/** Écran de connexion. */
 export default function LoginScreen() {
   const { email, setEmail, password, setPassword, errorMessage, isBusy, onSignInPress } =
     useLoginForm();

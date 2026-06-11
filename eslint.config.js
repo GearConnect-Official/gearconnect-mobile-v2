@@ -7,6 +7,20 @@ module.exports = defineConfig([
   expoConfig,
   eslintConfigPrettier,
   {
-    ignores: ['dist/*'],
+    files: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**/*.{js,ts,tsx}'],
+    languageOptions: {
+      globals: {
+        jest: 'readonly',
+        describe: 'readonly',
+        it: 'readonly',
+        test: 'readonly',
+        expect: 'readonly',
+        beforeEach: 'readonly',
+        afterEach: 'readonly',
+        beforeAll: 'readonly',
+        afterAll: 'readonly',
+      },
+    },
   },
+  { ignores: ['dist/*'] },
 ]);
