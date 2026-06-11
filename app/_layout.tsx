@@ -8,6 +8,9 @@ import 'react-native-reanimated';
 
 import { useColorScheme } from '@/components/useColorScheme';
 
+import { ClerkProvider } from '@clerk/expo';                                                                                                                                                                                                                         
+import { tokenCache } from '@clerk/expo/token-cache';
+
 export {
   // Catch any errors thrown by the Layout component.
   ErrorBoundary,
@@ -15,7 +18,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
+  initialRouteName: 'index',
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -42,7 +45,16 @@ export default function RootLayout() {
     return null;
   }
 
-  return <RootLayoutNav />;
+  const clerkKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  if (!clerkKey) {
+    throw new Error('The publishable key is not set. Please set the EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY environment variable.');
+  }
+  
+  return (
+    <ClerkProvider publishableKey={clerkKey} tokenCache={tokenCache} >
+      <RootLayoutNav />
+    </ClerkProvider>
+  );
 }
 
 function RootLayoutNav() {
@@ -50,10 +62,7 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
+      <Stack screenOptions={{ headerShown: false }}/>
     </ThemeProvider>
   );
 }
