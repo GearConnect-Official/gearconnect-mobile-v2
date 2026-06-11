@@ -22,7 +22,9 @@ export async function getCurrentUser(token: string): Promise<CurrentUser> {
 
 /** Construit l'objet fichier RN ({ uri, name, type }) attendu par FormData. */
 function toFormFile(media: SelectedMedia) {
-  const ext = media.uri.split('.').pop()?.split('?')[0]?.toLowerCase() ?? (media.type === 'VIDEO' ? 'mp4' : 'jpg');
+  const ext =
+    media.uri.split('.').pop()?.split('?')[0]?.toLowerCase() ??
+    (media.type === 'VIDEO' ? 'mp4' : 'jpg');
   const name = `upload.${ext}`;
   const type = media.type === 'VIDEO' ? `video/${ext}` : `image/${ext === 'jpg' ? 'jpeg' : ext}`;
   return { uri: media.uri, name, type };

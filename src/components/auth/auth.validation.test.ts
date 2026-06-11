@@ -1,12 +1,17 @@
-import { isValidEmail, isValidPassword, isValidUsername,isValidVerificationCode } from "./auth.validation";
+import {
+  isValidEmail,
+  isValidPassword,
+  isValidUsername,
+  isValidVerificationCode,
+} from './auth.validation';
 
-test('rejette un email sans @', () =>{
-    expect(isValidEmail('abc')).toBe(false);
+test('rejette un email sans @', () => {
+  expect(isValidEmail('abc')).toBe(false);
 });
 
-test('accepte un email valide', () =>{
-    expect(isValidEmail('a@b.com')).toBe(true);
-})
+test('accepte un email valide', () => {
+  expect(isValidEmail('a@b.com')).toBe(true);
+});
 
 test('rejette un mot de passe trop court', () => {
   expect(isValidPassword('1234567')).toBe(false);
@@ -31,4 +36,3 @@ test('rejette un code de vérification trop court', () => {
 test('accepte un code de vérification de 6 caractères', () => {
   expect(isValidVerificationCode('123456')).toBe(true);
 });
-

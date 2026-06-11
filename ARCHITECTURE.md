@@ -226,7 +226,7 @@ gearconnect-mobile-v2/
 │   │   ├── messageUtils.ts
 │   │   └── postFetchFactories.ts
 │   │
-│   ├── styles/                            # Styles partagés & thème
+│   ├── styles/                            # Design tokens globaux (thème)
 │   │   ├── theme.ts
 │   │   ├── colors.ts
 │   │   ├── typography.ts

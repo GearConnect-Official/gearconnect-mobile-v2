@@ -26,5 +26,5 @@ export const palette = {
   gray500: '#8E8E8E',
   gray200: '#EFEFEF',
   gray100: '#FAFAFA',
-  error: '#ED4956'
-}
+  error: '#ED4956',
+};

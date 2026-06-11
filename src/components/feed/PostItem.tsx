@@ -23,7 +23,11 @@ export default function PostItem({ author, media, body }: Props) {
     <View style={styles.card}>
       <View style={styles.header}>
         {author.avatarUrl ? (
-          <Image source={withCloudinaryAuto(author.avatarUrl)} style={styles.avatar} contentFit="cover" />
+          <Image
+            source={withCloudinaryAuto(author.avatarUrl)}
+            style={styles.avatar}
+            contentFit="cover"
+          />
         ) : (
           <View style={[styles.avatar, styles.avatarFallback]}>
             <FontAwesome name="user" size={16} color="#fff" />
