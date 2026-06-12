@@ -1,6 +1,6 @@
 import { ENV } from '@/config/env';
-import { CreatePostInput, Post, SelectedMedia } from '@/types/post.types';
-import { CurrentUser } from '@/types/user.types';
+import type { CreatePostInput, Post, SelectedMedia } from '@/types/post.types';
+import type { CurrentUser } from '@/types/user.types';
 
 const BASE = ENV.apiUrl;
 
@@ -38,7 +38,10 @@ export async function createPost(input: CreatePostInput, token: string): Promise
   const form = new FormData();
   form.append('body', input.body);
   form.append('userId', String(input.userId));
-  input.media.forEach((m) => form.append('media', toFormFile(m) as any));
+  for (const m of input.media) {
+    // RN's FormData accepts { uri, name, type } objects, not actual Blobs.
+    form.append('media', toFormFile(m) as unknown as Blob);
+  }
 
   const res = await fetch(`${BASE}/posts`, {
     method: 'POST',

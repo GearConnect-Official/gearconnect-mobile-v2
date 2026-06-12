@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useSignUp, useAuth } from '@clerk/expo';
+import { useAuth, useSignUp } from '@clerk/expo';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import {
   isValidEmail,
   isValidPassword,

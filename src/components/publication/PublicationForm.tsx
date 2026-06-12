@@ -2,9 +2,9 @@ import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { PostItem } from '@/components/feed';
 import { styles } from '@/styles/publicationForm.styles';
+import CaptionInput from './CaptionInput';
 import Header from './Header';
 import MediaSection from './MediaSection';
-import CaptionInput from './CaptionInput';
 import { usePublicationForm } from './usePublicationForm';
 
 /** Écran de création de post en 2 étapes : sélection des médias → aperçu + description. */

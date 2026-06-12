@@ -96,12 +96,13 @@ l'archi qui gagne — et il faut alors mettre à jour ce fichier, pas l'inverse.
 
 ## 3. Formatage
 
-ESLint et Prettier sont configurés (`eslint.config.js`, `.prettierrc.json`).
+Biome est configuré (`biome.json`) et remplace ESLint/Prettier.
 Avant de commit/ouvrir une PR :
 
 ```bash
 npm run format   # corrige automatiquement indentation, quotes, points-virgules...
-npm run lint     # signale le reste (hooks, imports inutilisés, etc.)
+npm run lint     # signale le reste (imports inutilisés, any, etc.)
+npm run check    # les deux en une fois (lint + format + organize imports)
 ```
 
 Les règles ci-dessous sont donc appliquées automatiquement par ces outils,

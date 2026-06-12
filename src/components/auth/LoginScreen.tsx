@@ -1,8 +1,8 @@
-import { Image, Pressable, Text, TextInput, View } from 'react-native';
 import { Link } from 'expo-router';
-import { useLoginForm } from './useLoginForm';
+import { Image, Pressable, Text, TextInput, View } from 'react-native';
 import { authStyles } from '@/styles/auth.styles';
 import { palette } from '@/styles/colors';
+import { useLoginForm } from './useLoginForm';
 
 /** Écran de connexion. */
 export default function LoginScreen() {

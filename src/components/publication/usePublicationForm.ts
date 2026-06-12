@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 import { useAuth } from '@clerk/expo';
 import { useRouter } from 'expo-router';
-
-import { SelectedMedia } from '@/types/post.types';
-import { CurrentUser } from '@/types/user.types';
+import { useEffect, useState } from 'react';
+import { Alert } from 'react-native';
 import { createPost, getCurrentUser } from '@/services/api/postService';
+import type { SelectedMedia } from '@/types/post.types';
+import type { CurrentUser } from '@/types/user.types';
 
 type Step = 1 | 2;
 

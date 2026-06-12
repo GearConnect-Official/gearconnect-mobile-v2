@@ -1,8 +1,8 @@
-import { Image, Pressable, Text, TextInput, View } from 'react-native';
 import { Link } from 'expo-router';
-import { useRegisterForm } from './useRegisterForm';
+import { Image, Pressable, Text, TextInput, View } from 'react-native';
 import { authStyles } from '@/styles/auth.styles';
 import { palette } from '@/styles/colors';
+import { useRegisterForm } from './useRegisterForm';
 
 /** Écran d'inscription en 2 étapes : création du compte puis vérification du code. */
 export default function RegisterScreen() {

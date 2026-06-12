@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { palette } from '@/styles/colors';
-import { typography } from '@/styles/typography';
 import { spacing } from '@/styles/spacing';
+import { typography } from '@/styles/typography';
 
 export const authStyles = StyleSheet.create({
   container: {

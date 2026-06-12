@@ -1,4 +1,4 @@
-export { default as PostItem } from './PostItem';
-export type { PostAuthor } from './PostItem';
-export { default as MediaCarousel } from './MediaCarousel';
 export type { CarouselItem } from './MediaCarousel';
+export { default as MediaCarousel } from './MediaCarousel';
+export type { PostAuthor } from './PostItem';
+export { default as PostItem } from './PostItem';

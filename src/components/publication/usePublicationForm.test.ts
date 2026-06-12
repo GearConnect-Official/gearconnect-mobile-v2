@@ -1,4 +1,4 @@
-import { renderHook, waitFor, act } from '@testing-library/react-native';
+import { act, renderHook, waitFor } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 import { usePublicationForm } from './usePublicationForm';
 
@@ -11,8 +11,8 @@ const mockCreatePost = jest.fn();
 jest.mock('@clerk/expo', () => ({ useAuth: () => ({ getToken: mockGetToken }) }));
 jest.mock('expo-router', () => ({ useRouter: () => ({ back: mockBack, replace: mockReplace }) }));
 jest.mock('@/services/api/postService', () => ({
-  getCurrentUser: mockGetCurrentUser,
-  createPost: mockCreatePost,
+  getCurrentUser: (...args) => mockGetCurrentUser(...args),
+  createPost: (...args) => mockCreatePost(...args),
 }));
 
 beforeEach(() => {
@@ -30,10 +30,10 @@ test('charge le profil courant au montage', async () => {
   });
 });
 
-test('cancel() revient en arrière', () => {
-  const { result } =  renderHook(() => usePublicationForm());
+test('cancel() revient en arrière', async () => {
+  const { result } = await renderHook(() => usePublicationForm());
 
-  act(() => {
+  await act(async () => {
     result.current.cancel();
   });
 
@@ -44,9 +44,11 @@ test('publish() crée le post puis redirige vers le feed', async () => {
   mockCreatePost.mockResolvedValue({});
   const { result } = await renderHook(() => usePublicationForm());
 
-  await waitFor(() => expect(result.current.author.username).toBe('nabou'));
+  await waitFor(async () => {
+    expect(result.current.author.username).toBe('nabou');
+  });
 
-  act(() => {
+  await act(async () => {
     result.current.setDescription('Mon premier post');
   });
 
@@ -61,12 +63,13 @@ test('publish() crée le post puis redirige vers le feed', async () => {
   expect(mockReplace).toHaveBeenCalledWith('/(app)/(tabs)/home');
 });
 
-test('publish() affiche une alerte en cas d\'échec et arrête le loader', async () => {
+test("publish() affiche une alerte en cas d'échec et arrête le loader", async () => {
   mockCreatePost.mockRejectedValue(new Error('Création du post échouée (500) : oops'));
   const { result } = await renderHook(() => usePublicationForm());
 
-  await waitFor(() => expect(result.current.author.username).toBe('nabou'));
-
+  await waitFor(async () => {
+    expect(result.current.author.username).toBe('nabou');
+  });
   await act(async () => {
     await result.current.publish();
   });

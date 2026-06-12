@@ -1,9 +1,0 @@
-node_modules
-dist
-.expo
-android
-ios
-
-# Les .md contiennent des blocs de code "volontairement" mal formatés
-# (exemples ❌/✅) — Prettier casserait ces exemples en les reformattant.
-*.md
