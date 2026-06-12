@@ -1,5 +1,5 @@
-import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 
 import { styles } from '@/styles/header.styles';
 

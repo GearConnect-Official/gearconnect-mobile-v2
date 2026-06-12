@@ -1,60 +1,55 @@
-import { useState } from 'react';
-import { Button, Text, TextInput, View } from 'react-native';
-import { useSignIn } from '@clerk/expo';
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
+import { Image, Pressable, Text, TextInput, View } from 'react-native';
+import { authStyles } from '@/styles/auth.styles';
+import { palette } from '@/styles/colors';
+import { useLoginForm } from './useLoginForm';
 
+/** Écran de connexion. */
 export default function LoginScreen() {
-    // Nouvelle API "Future" (signals) : pas de isLoaded/setActive ici.
-    const { signIn, errors, fetchStatus } = useSignIn();
-    const router = useRouter();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  const { email, setEmail, password, setPassword, errorMessage, isBusy, onSignInPress } =
+    useLoginForm();
 
-    async function onSignInPress() {
-        // create() ne throw pas : il renvoie { error } et met à jour le signal signIn.
-        await signIn.create({ identifier: email, password });
-
-        // Connexion terminée -> finalize() active la session (remplace setActive).
-        if (signIn.status === 'complete') {
-            await signIn.finalize();
-            router.replace('/(app)/(tabs)/home');
-        }
-    }
-
-    // errors est réactif : on prend le premier message dispo (champ ou global).
-    const errorMessage =
-        errors.fields.identifier?.message ??
-        errors.fields.password?.message ??
-        errors.global?.[0]?.message;
-
-    const isBusy = fetchStatus === 'fetching';
-
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', gap: 12, padding: 24, backgroundColor: 'white' }}>
-            <TextInput
-                value={email}
-                onChangeText={setEmail}
-                placeholder="Email"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                style={{ borderWidth: 1, padding: 12 }}
-            />
-            <TextInput
-                value={password}
-                onChangeText={setPassword}
-                placeholder="Mot de passe"
-                secureTextEntry
-                style={{ borderWidth: 1, padding: 12 }}
-            />
-            {errorMessage ? <Text style={{ color: 'red' }}>{errorMessage}</Text> : null}
-            <Button
-                title={isBusy ? 'Connexion…' : 'Se connecter'}
-                onPress={onSignInPress}
-                disabled={isBusy}
-            />
-            <Link href="/(auth)/register">
-                <Text>Pas de compte ? S&apos;inscrire</Text>
-            </Link>
+  return (
+    <View style={authStyles.container}>
+      <View style={authStyles.card}>
+        <Image
+          source={require('../../../assets/images/Logo GearConnect.png')}
+          style={authStyles.logo}
+          resizeMode="contain"
+        />
+        <Text style={authStyles.title}>Connexion</Text>
+        <TextInput
+          value={email}
+          onChangeText={setEmail}
+          placeholder="Email"
+          placeholderTextColor={palette.gray500}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          style={authStyles.input}
+        />
+        <TextInput
+          value={password}
+          onChangeText={setPassword}
+          placeholder="Mot de passe"
+          placeholderTextColor={palette.gray500}
+          secureTextEntry
+          style={authStyles.input}
+        />
+        {errorMessage ? <Text style={authStyles.errorText}>{errorMessage}</Text> : null}
+        <Pressable
+          onPress={onSignInPress}
+          disabled={isBusy}
+          style={[authStyles.button, isBusy && authStyles.buttonDisabled]}
+        >
+          <Text style={authStyles.buttonText}>{isBusy ? 'Connexion…' : 'Se connecter'}</Text>
+        </Pressable>
+        <View style={authStyles.linkRow}>
+          <Text>Pas de compte ?</Text>
+          <Link href="/(auth)/register">
+            <Text style={authStyles.linkText}> S&apos;inscrire</Text>
+          </Link>
         </View>
-    );
+      </View>
+    </View>
+  );
 }

@@ -1,17 +1,16 @@
+import { Image } from 'expo-image';
+import { useVideoPlayer, VideoView } from 'expo-video';
 import { useState } from 'react';
 import {
   FlatList,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
   useWindowDimensions,
   View,
 } from 'react-native';
-import { Image } from 'expo-image';
-import { useVideoPlayer, VideoView } from 'expo-video';
-
-import { MediaType } from '@/types/post.types';
-import { withCloudinaryAuto } from '@/utils/mediaUtils';
 import { styles } from '@/styles/mediaCarousel.styles';
+import type { MediaType } from '@/types/post.types';
+import { withCloudinaryAuto } from '@/utils/mediaUtils';
 
 export interface CarouselItem {
   uri: string;
@@ -74,6 +73,7 @@ export default function MediaCarousel({ items }: Props) {
       {items.length > 1 && (
         <View style={styles.dots}>
           {items.map((_, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: dots are positional indicators, no stable id available
             <View key={i} style={[styles.dot, i === index && styles.dotActive]} />
           ))}
         </View>
