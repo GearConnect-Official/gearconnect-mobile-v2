@@ -1,10 +1,10 @@
 import { KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { PostItem } from '@/components/feed';
 import { styles } from '@/styles/publicationForm.styles';
 import CaptionInput from './CaptionInput';
 import Header from './Header';
 import MediaSection from './MediaSection';
-import PostPreview from './PostPreview';
 import { usePublicationForm } from './usePublicationForm';
 
 /** Écran de création de post en 2 étapes : sélection des médias → aperçu + description. */
@@ -50,7 +50,12 @@ export default function PublicationForm() {
             rightLoading={publishing}
           />
           <ScrollView keyboardShouldPersistTaps="handled">
-            <PostPreview author={author} media={media} />
+            {/* Aperçu live : la vraie carte du feed, alimentée par le brouillon. */}
+            <PostItem
+              author={author}
+              media={media.map((m) => ({ uri: m.uri, type: m.type }))}
+              body=""
+            />
             <View style={styles.divider} />
             <CaptionInput value={description} onChange={setDescription} />
           </ScrollView>
