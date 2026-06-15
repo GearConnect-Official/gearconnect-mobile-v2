@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   FlatList,
   type NativeScrollEvent,
@@ -19,13 +19,30 @@ export interface CarouselItem {
 
 interface Props {
   items: CarouselItem[];
+  active?: boolean;
 }
 
-/** Une slide vidéo : player dédié + contrôles natifs. */
-function CarouselVideo({ uri, width }: { uri: string; width: number }) {
+/** Une slide vidéo : autoplay muté en boucle quand visible, contrôles natifs. */
+function CarouselVideo({
+  uri,
+  width,
+  shouldPlay,
+}: {
+  uri: string;
+  width: number;
+  shouldPlay: boolean;
+}) {
   const player = useVideoPlayer(uri, (p) => {
     p.loop = true;
+    p.muted = true;
   });
+
+  useEffect(() => {
+    player.muted = true;
+    if (shouldPlay) player.play();
+    else player.pause();
+  }, [shouldPlay, player]);
+
   return (
     <VideoView
       player={player}
@@ -37,7 +54,7 @@ function CarouselVideo({ uri, width }: { uri: string; width: number }) {
 }
 
 /** Carrousel horizontal "page par page" pour images (expo-image) et vidéos (expo-video). */
-export default function MediaCarousel({ items }: Props) {
+export default function MediaCarousel({ items, active = false }: Props) {
   const { width } = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -56,9 +73,13 @@ export default function MediaCarousel({ items }: Props) {
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={onScrollEnd}
         keyExtractor={(item, i) => `${item.uri}-${i}`}
-        renderItem={({ item }) =>
+        renderItem={({ item, index: slideIndex }) =>
           item.type === 'VIDEO' ? (
-            <CarouselVideo uri={item.uri} width={width} />
+            <CarouselVideo
+              uri={item.uri}
+              width={width}
+              shouldPlay={active && index === slideIndex}
+            />
           ) : (
             <Image
               source={withCloudinaryAuto(item.uri)}

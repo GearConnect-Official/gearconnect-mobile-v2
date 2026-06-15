@@ -39,4 +39,41 @@ export interface Post {
     profilePicture?: string | null;
     isVerify?: boolean;
   };
+  interactions?: PostInteraction[];
+  isFavorited?: boolean;
+  favoritesCount?: number;
+}
+
+/** Interaction (like/share/comment) accompagnant un post renvoyé par l'API. */
+export interface PostInteraction {
+  userId: number;
+  like: boolean;
+  share: boolean;
+  comment?: string | null;
+}
+
+/** Auteur tel qu'affiché dans une carte du feed. */
+export interface FeedAuthor {
+  id: number;
+  username: string;
+  avatarUrl?: string | null;
+  isVerify?: boolean;
+}
+
+/** Post prêt à afficher dans le feed : compteurs dérivés + état du like courant. */
+export interface FeedPost {
+  id: number;
+  body: string;
+  createdAt: string;
+  author: FeedAuthor;
+  media: PostMedia[];
+  likeCount: number;
+  commentCount: number;
+  likedByMe: boolean;
+}
+
+/** Page de feed normalisée renvoyée par getPosts (`nextPage: null` = fin du feed). */
+export interface PostsPage {
+  posts: FeedPost[];
+  nextPage: number | null;
 }

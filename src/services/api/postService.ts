@@ -1,8 +1,49 @@
 import { ENV } from '@/config/env';
-import type { CreatePostInput, Post, SelectedMedia } from '@/types/post.types';
+import type { CreatePostInput, FeedPost, Post, PostsPage, SelectedMedia } from '@/types/post.types';
 import type { CurrentUser } from '@/types/user.types';
 
 const BASE = ENV.apiUrl;
+
+const PAGE_SIZE = 10;
+
+/** Transforme un post brut de l'API en FeedPost : compteurs dérivés des interactions. */
+function toFeedPost(post: Post, currentUserId: number): FeedPost {
+  const interactions = post.interactions ?? [];
+  return {
+    id: post.id,
+    body: post.body,
+    createdAt: post.createdAt,
+    author: {
+      id: post.user.id,
+      username: post.user.username,
+      avatarUrl: post.user.profilePicture,
+      isVerify: post.user.isVerify,
+    },
+    media: post.media,
+    likeCount: interactions.filter((i) => i.like).length,
+    commentCount: interactions.filter((i) => Boolean(i.comment)).length,
+    likedByMe: interactions.some((i) => i.userId === currentUserId && i.like),
+  };
+}
+
+/** Récupère une page du feed (GET /posts) et la normalise en PostsPage. */
+export async function getPosts(
+  page: number,
+  currentUserId: number,
+  token: string,
+): Promise<PostsPage> {
+  const res = await fetch(`${BASE}/posts?page=${page}&limit=${PAGE_SIZE}&userId=${currentUserId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) {
+    throw new Error('Impossible de charger le feed.');
+  }
+  const data: Post[] = await res.json();
+  return {
+    posts: data.map((p) => toFeedPost(p, currentUserId)),
+    nextPage: data.length === PAGE_SIZE ? page + 1 : null,
+  };
+}
 
 /** Récupère le profil de l'utilisateur connecté (id interne, pseudo, avatar DB) via GET /auth/me. */
 export async function getCurrentUser(token: string): Promise<CurrentUser> {
