@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
   FlatList,
   type NativeScrollEvent,
@@ -19,28 +19,13 @@ export interface CarouselItem {
 
 interface Props {
   items: CarouselItem[];
-  active?: boolean;
 }
 
-interface VideoSlideProps {
-  uri: string;
-  width: number;
-  shouldPlay: boolean;
-}
-
-/** Une slide vidéo : autoplay muté en boucle quand visible, contrôles natifs. */
-function CarouselVideo({ uri, width, shouldPlay }: VideoSlideProps) {
+/** Une slide vidéo : player dédié + contrôles natifs. */
+function CarouselVideo({ uri, width }: { uri: string; width: number }) {
   const player = useVideoPlayer(uri, (p) => {
     p.loop = true;
-    p.muted = true;
   });
-
-  useEffect(() => {
-    player.muted = true;
-    if (shouldPlay) player.play();
-    else player.pause();
-  }, [shouldPlay, player]);
-
   return (
     <VideoView
       player={player}
@@ -52,7 +37,7 @@ function CarouselVideo({ uri, width, shouldPlay }: VideoSlideProps) {
 }
 
 /** Carrousel horizontal "page par page" pour images (expo-image) et vidéos (expo-video). */
-export default function MediaCarousel({ items, active = false }: Props) {
+export default function MediaCarousel({ items }: Props) {
   const { width } = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -71,13 +56,9 @@ export default function MediaCarousel({ items, active = false }: Props) {
         showsHorizontalScrollIndicator={false}
         onMomentumScrollEnd={onScrollEnd}
         keyExtractor={(item, i) => `${item.uri}-${i}`}
-        renderItem={({ item, index: slideIndex }) =>
+        renderItem={({ item }) =>
           item.type === 'VIDEO' ? (
-            <CarouselVideo
-              uri={item.uri}
-              width={width}
-              shouldPlay={active && index === slideIndex}
-            />
+            <CarouselVideo uri={item.uri} width={width} />
           ) : (
             <Image
               source={withCloudinaryAuto(item.uri)}
