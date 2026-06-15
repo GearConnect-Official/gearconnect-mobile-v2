@@ -6,6 +6,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  logoutButton: {
+    position: 'absolute',
+    top: 60,
+    right: 20,
+  },
   title: {
     fontSize: 20,
     fontWeight: 'bold',

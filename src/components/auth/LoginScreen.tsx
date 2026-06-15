@@ -1,5 +1,5 @@
 import { Link } from 'expo-router';
-import { Image, Pressable, Text, TextInput, View } from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View } from 'react-native';
 import { authStyles } from '@/styles/auth.styles';
 import { palette } from '@/styles/colors';
 import { useLoginForm } from './useLoginForm';
@@ -10,7 +10,9 @@ export default function LoginScreen() {
     useLoginForm();
 
   return (
-    <View style={authStyles.container}>
+    <KeyboardAvoidingView 
+    style={authStyles.container}
+    behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View style={authStyles.card}>
         <Image
           source={require('../../../assets/images/Logo GearConnect.png')}
@@ -50,6 +52,6 @@ export default function LoginScreen() {
           </Link>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 }
