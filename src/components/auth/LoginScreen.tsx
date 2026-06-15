@@ -20,7 +20,7 @@ export default function LoginScreen() {
   return (
     <KeyboardAvoidingView
       style={authStyles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={authStyles.card}>
         <Image

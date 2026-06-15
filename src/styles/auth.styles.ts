@@ -11,6 +11,18 @@ export const authStyles = StyleSheet.create({
     padding: spacing.lg,
     backgroundColor: palette.gray100,
   },
+  // Variante scrollable : carte centrée quand le contenu tient, défilable
+  // quand le clavier réduit la place (sinon le bas du formulaire est masqué).
+  flex: {
+    flex: 1,
+    backgroundColor: palette.gray100,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: spacing.lg,
+  },
   card: {
     width: '100%',
     maxWidth: 400,
