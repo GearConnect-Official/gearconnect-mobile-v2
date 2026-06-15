@@ -28,15 +28,16 @@ interface VideoSlideProps {
   shouldPlay: boolean;
 }
 
-/** Une slide vidéo : autoplay muté en boucle quand visible, contrôles natifs. */
+/** Une slide vidéo : autoplay avec son en boucle quand visible, contrôles natifs. */
 function CarouselVideo({ uri, width, shouldPlay }: VideoSlideProps) {
   const player = useVideoPlayer(uri, (p) => {
     p.loop = true;
-    p.muted = true;
+    // 'doNotMix' demande le focus audio : indispensable pour que le son sorte
+    // sur Android (sur iOS le son passe même en 'auto').
+    p.audioMixingMode = 'doNotMix';
   });
 
   useEffect(() => {
-    player.muted = true;
     if (shouldPlay) player.play();
     else player.pause();
   }, [shouldPlay, player]);
