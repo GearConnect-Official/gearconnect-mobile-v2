@@ -19,6 +19,9 @@ export function usePublicationForm() {
   const [me, setMe] = useState<CurrentUser | null>(null);
 
   // Profil DB de l'auteur, pour l'aperçu et l'id à la publication.
+  // Chargé une seule fois au montage : `getToken` change de référence à chaque
+  // render côté Clerk, le mettre en dépendance relancerait l'effet en boucle.
+  // biome-ignore lint/correctness/useExhaustiveDependencies: chargement unique au montage, getToken est volontairement exclu.
   useEffect(() => {
     (async () => {
       try {
@@ -28,7 +31,7 @@ export function usePublicationForm() {
         // profil indisponible : l'aperçu affichera un placeholder
       }
     })();
-  }, [getToken]);
+  }, []);
 
   const author = {
     username: me?.username ?? '',
