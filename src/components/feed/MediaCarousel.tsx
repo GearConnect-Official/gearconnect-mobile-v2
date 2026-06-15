@@ -22,16 +22,14 @@ interface Props {
   active?: boolean;
 }
 
-/** Une slide vidéo : autoplay muté en boucle quand visible, contrôles natifs. */
-function CarouselVideo({
-  uri,
-  width,
-  shouldPlay,
-}: {
+interface VideoSlideProps {
   uri: string;
   width: number;
   shouldPlay: boolean;
-}) {
+}
+
+/** Une slide vidéo : autoplay muté en boucle quand visible, contrôles natifs. */
+function CarouselVideo({ uri, width, shouldPlay }: VideoSlideProps) {
   const player = useVideoPlayer(uri, (p) => {
     p.loop = true;
     p.muted = true;
