@@ -1,6 +1,6 @@
 import { Link, Stack } from 'expo-router';
-import { styles } from '@/styles/notFound.styles';
 import { Text, View } from '@/components/Themed';
+import { styles } from '@/styles/notFound.styles';
 
 export default function NotFoundScreen() {
   return (
@@ -16,5 +16,3 @@ export default function NotFoundScreen() {
     </>
   );
 }
-
-

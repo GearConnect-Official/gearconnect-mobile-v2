@@ -1,5 +1,13 @@
 import { Link } from 'expo-router';
-import { Image, KeyboardAvoidingView, Platform, Pressable, Text, TextInput, View } from 'react-native';
+import {
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { authStyles } from '@/styles/auth.styles';
 import { palette } from '@/styles/colors';
 import { useRegisterForm } from './useRegisterForm';
@@ -26,9 +34,10 @@ export default function RegisterScreen() {
   // Phase 2 : saisie du code reçu par email.
   if (pendingVerification) {
     return (
-          <KeyboardAvoidingView 
-            style={authStyles.container}
-            behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      <KeyboardAvoidingView
+        style={authStyles.container}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
         <View style={authStyles.card}>
           <Text style={authStyles.title}>Vérification</Text>
           <TextInput
@@ -55,9 +64,10 @@ export default function RegisterScreen() {
 
   // Phase 1 : pseudo + email + mot de passe.
   return (
-    <KeyboardAvoidingView 
+    <KeyboardAvoidingView
       style={authStyles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+    >
       <View style={authStyles.card}>
         <Image
           source={require('../../../assets/images/Logo GearConnect.png')}
