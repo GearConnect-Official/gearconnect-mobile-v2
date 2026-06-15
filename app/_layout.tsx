@@ -6,10 +6,9 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 
-import { useColorScheme } from '@/components/useColorScheme';
-
-import { ClerkProvider } from '@clerk/expo';                                                                                                                                                                                                                         
+import { ClerkProvider } from '@clerk/expo';
 import { tokenCache } from '@clerk/expo/token-cache';
+import { useColorScheme } from '@/components/useColorScheme';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -47,11 +46,13 @@ export default function RootLayout() {
 
   const clerkKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY;
   if (!clerkKey) {
-    throw new Error('The publishable key is not set. Please set the EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY environment variable.');
+    throw new Error(
+      'The publishable key is not set. Please set the EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY environment variable.',
+    );
   }
-  
+
   return (
-    <ClerkProvider publishableKey={clerkKey} tokenCache={tokenCache} >
+    <ClerkProvider publishableKey={clerkKey} tokenCache={tokenCache}>
       <RootLayoutNav />
     </ClerkProvider>
   );
@@ -62,7 +63,7 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}/>
+      <Stack screenOptions={{ headerShown: false }} />
     </ThemeProvider>
   );
 }

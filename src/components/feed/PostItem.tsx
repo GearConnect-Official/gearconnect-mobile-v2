@@ -1,10 +1,9 @@
-import { Text, View } from 'react-native';
-import { Image } from 'expo-image';
 import { FontAwesome } from '@expo/vector-icons';
-
-import { withCloudinaryAuto } from '@/utils/mediaUtils';
+import { Image } from 'expo-image';
+import { Text, View } from 'react-native';
 import { styles } from '@/styles/postItem.styles';
-import MediaCarousel, { CarouselItem } from './MediaCarousel';
+import { withCloudinaryAuto } from '@/utils/mediaUtils';
+import MediaCarousel, { type CarouselItem } from './MediaCarousel';
 
 export interface PostAuthor {
   username: string;
@@ -23,7 +22,11 @@ export default function PostItem({ author, media, body }: Props) {
     <View style={styles.card}>
       <View style={styles.header}>
         {author.avatarUrl ? (
-          <Image source={withCloudinaryAuto(author.avatarUrl)} style={styles.avatar} contentFit="cover" />
+          <Image
+            source={withCloudinaryAuto(author.avatarUrl)}
+            style={styles.avatar}
+            contentFit="cover"
+          />
         ) : (
           <View style={[styles.avatar, styles.avatarFallback]}>
             <FontAwesome name="user" size={16} color="#fff" />

@@ -1,10 +1,9 @@
-import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
-import { Image } from 'expo-image';
 import { FontAwesome } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
-
-import { MediaType, SelectedMedia } from '@/types/post.types';
+import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
 import { styles } from '@/styles/mediaSection.styles';
+import type { MediaType, SelectedMedia } from '@/types/post.types';
 
 const MAX_MEDIA = 10;
 
@@ -99,6 +98,7 @@ export default function MediaSection({ media, onChange }: Props) {
       ) : (
         <ScrollView contentContainerStyle={styles.grid}>
           {media.map((item, i) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: uri alone isn't unique if the same file is added twice
             <View key={`${item.uri}-${i}`} style={styles.thumbWrapper}>
               <Image source={item.uri} style={styles.thumb} contentFit="cover" />
               {item.type === 'VIDEO' && (

@@ -226,7 +226,7 @@ gearconnect-mobile-v2/
 │   │   ├── messageUtils.ts
 │   │   └── postFetchFactories.ts
 │   │
-│   ├── styles/                            # Styles partagés & thème
+│   ├── styles/                            # Design tokens globaux (thème)
 │   │   ├── theme.ts
 │   │   ├── colors.ts
 │   │   ├── typography.ts
@@ -260,11 +260,11 @@ Avec cette structure flat, la navigation est simple :
 
 ```typescript
 // Depuis n'importe quel écran
-router.push("/userProfile?id=123");
-router.push("/postDetail?id=456");
-router.push("/eventDetail?id=789");
-router.push("/conversation?id=abc");
-router.push("/settings");
+router.push('/userProfile?id=123');
+router.push('/postDetail?id=456');
+router.push('/eventDetail?id=789');
+router.push('/conversation?id=abc');
+router.push('/settings');
 ```
 
 Pas besoin de connaître le nesting. Chaque écran a une URL unique et directe.
@@ -273,17 +273,17 @@ Pas besoin de connaître le nesting. Chaque écran a une URL unique et directe.
 
 ## Stack technique
 
-| Outil | Usage |
-|---|---|
-| **Expo ~54** | Framework React Native |
-| **Expo Router** | Navigation file-based |
-| **TypeScript** | Typage |
-| **Clerk** | Authentification |
-| **Axios** | Appels API |
-| **Cloudinary** | Upload & gestion médias |
-| **Mixpanel** | Analytics |
-| **Reanimated** | Animations |
-| **Gesture Handler** | Gestes tactiles |
+| Outil               | Usage                   |
+| ------------------- | ----------------------- |
+| **Expo ~54**        | Framework React Native  |
+| **Expo Router**     | Navigation file-based   |
+| **TypeScript**      | Typage                  |
+| **Clerk**           | Authentification        |
+| **Axios**           | Appels API              |
+| **Cloudinary**      | Upload & gestion médias |
+| **Mixpanel**        | Analytics               |
+| **Reanimated**      | Animations              |
+| **Gesture Handler** | Gestes tactiles         |
 
 ---
 
@@ -291,13 +291,13 @@ Pas besoin de connaître le nesting. Chaque écran a une URL unique et directe.
 
 ### Nommage des fichiers
 
-| Type | Convention | Exemple |
-|---|---|---|
-| Ecrans (app/) | camelCase | `eventDetail.tsx` |
-| Composants (src/) | PascalCase | `PostItem.tsx` |
-| Services | camelCase | `eventService.ts` |
-| Hooks | camelCase avec `use` | `useCloudinary.ts` |
-| Types | camelCase avec `.types` | `event.types.ts` |
+| Type              | Convention              | Exemple            |
+| ----------------- | ----------------------- | ------------------ |
+| Ecrans (app/)     | camelCase               | `eventDetail.tsx`  |
+| Composants (src/) | PascalCase              | `PostItem.tsx`     |
+| Services          | camelCase               | `eventService.ts`  |
+| Hooks             | camelCase avec `use`    | `useCloudinary.ts` |
+| Types             | camelCase avec `.types` | `event.types.ts`   |
 
 ### Imports
 
@@ -309,10 +309,10 @@ Chaque dossier dans `src/components/` et `src/` a un `index.ts` pour des imports
 
 ```typescript
 // Plutôt que
-import { PostItem } from "@/src/components/feed/PostItem";
+import { PostItem } from '@/src/components/feed/PostItem';
 
 // On fait
-import { PostItem } from "@/components/feed";
+import { PostItem } from '@/components/feed';
 ```
 
 ### TypeScript alias
@@ -324,10 +324,7 @@ Dans `gearconnect-mobile-v2/tsconfig.json`, il faut donc supprimer `baseUrl` et 
 {
   "compilerOptions": {
     "paths": {
-      "@/*": [
-        "./src/*",
-        "./*"
-      ]
+      "@/*": ["./src/*", "./*"]
     }
   }
 }
