@@ -27,7 +27,7 @@ function PostItem({
   onShare,
   onOpenProfile,
 }: Props) {
-  const { author, media, body, likeCount, commentCount, likedByMe } = post;
+  const { author, media, body, likeCount, commentCount, shareCount, likedByMe } = post;
 
   return (
     <View style={styles.card}>
@@ -66,6 +66,7 @@ function PostItem({
 
         <Pressable style={styles.action} onPress={() => onShare?.(post.id)} hitSlop={8}>
           <FontAwesome name="share" size={20} color={palette.black} />
+          {shareCount > 0 && <Text style={styles.actionCount}>{shareCount}</Text>}
         </Pressable>
       </View>
 

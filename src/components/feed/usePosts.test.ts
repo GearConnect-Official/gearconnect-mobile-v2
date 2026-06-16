@@ -25,6 +25,7 @@ function post(id: number, likedByMe = false, likeCount = 0): FeedPost {
     author: { id: 9, username: 'auteur' },
     likeCount,
     commentCount: 0,
+    shareCount: 0,
     likedByMe,
   };
 }

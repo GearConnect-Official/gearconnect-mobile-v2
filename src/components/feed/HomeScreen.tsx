@@ -36,7 +36,10 @@ export default function HomeScreen() {
   });
   const viewabilityConfig = useRef(VIEWABILITY_CONFIG);
 
-  const onComment = useCallback(() => Alert.alert('Commentaires', 'Bientôt disponible.'), []);
+  const onComment = useCallback(
+    (postId: number) => router.push(`/comments?id=${postId}`),
+    [router],
+  );
   const onShare = useCallback(() => Alert.alert('Partager', 'Bientôt disponible.'), []);
 
   const renderItem = useCallback(

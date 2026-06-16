@@ -3,7 +3,6 @@ import type { CreatePostInput, FeedPost, Post, PostsPage, SelectedMedia } from '
 import type { CurrentUser } from '@/types/user.types';
 
 const BASE = ENV.apiUrl;
-
 const PAGE_SIZE = 10;
 
 /** Transforme un post brut de l'API en FeedPost : compteurs dérivés des interactions. */
@@ -21,7 +20,8 @@ function toFeedPost(post: Post, currentUserId: number): FeedPost {
     },
     media: post.media,
     likeCount: interactions.filter((i) => i.like).length,
-    commentCount: interactions.filter((i) => Boolean(i.comment)).length,
+    commentCount: post._count?.comments ?? 0,
+    shareCount: interactions.filter((i) => i.share).length,
     likedByMe: interactions.some((i) => i.userId === currentUserId && i.like),
   };
 }
