@@ -4,6 +4,7 @@ import { Alert } from 'react-native';
 import { toggleLike as toggleLikeApi } from '@/services/api/interactionService';
 import { getCurrentUser, getPosts } from '@/services/api/postService';
 import type { FeedPost } from '@/types/post.types';
+import { nextLikeState } from './likes';
 
 type LoadMode = 'initial' | 'refresh' | 'more';
 
@@ -87,10 +88,8 @@ export function usePosts() {
       const target = postsRef.current.find((p) => p.id === postId);
       if (!target) return;
       const previous = { likedByMe: target.likedByMe, likeCount: target.likeCount };
-      patchPost(postId, {
-        likedByMe: !previous.likedByMe,
-        likeCount: previous.likeCount + (previous.likedByMe ? -1 : 1),
-      });
+      const next = nextLikeState(previous.likedByMe, previous.likeCount);
+      patchPost(postId, { likedByMe: next.liked, likeCount: next.count });
       try {
         const token = await getToken();
         if (!token) throw new Error('Session expirée, reconnecte-toi.');
