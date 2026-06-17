@@ -52,7 +52,8 @@ module.exports = {
       ["expo-maps",{
         "requestLocationPermission": true,
         "locationPermission": "Autoriser l'accès à la localisation pour afficher les lieux à proximité."
-      }]
+      }],
+      ["expo-build-properties", { "ios": { "useModularHeaders": true } }]
     ],
     "experiments": {
       "typedRoutes": true
