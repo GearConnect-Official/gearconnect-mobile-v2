@@ -12,6 +12,7 @@ function apiPost(overrides: Partial<Post> = {}): Post {
     media: [],
     user: { id: 9, username: 'auteur', profilePicture: null },
     interactions: [],
+    _count: { comments: 0, shares: 0 },
     ...overrides,
   };
 }
@@ -24,21 +25,24 @@ beforeEach(() => {
   mockFetch.mockReset();
 });
 
-test('dérive likeCount, commentCount et likedByMe depuis les interactions', async () => {
+test('dérive likeCount des interactions, commentCount et shareCount de _count', async () => {
   resolveWith([
     apiPost({
+      // le legacy Interaction.comment/share ne doit PAS être compté : tout vient de _count
       interactions: [
-        { userId: 1, like: true, share: false, comment: null },
-        { userId: 2, like: true, share: false, comment: 'cool' },
-        { userId: 3, like: false, share: false, comment: 'top' },
+        { userId: 1, like: true, share: true, comment: 'legacy' },
+        { userId: 2, like: true, share: false, comment: null },
+        { userId: 3, like: false, share: true, comment: null },
       ],
+      _count: { comments: 5, shares: 7 },
     }),
   ]);
 
   const page = await getPosts(1, 1, 'tok');
 
   expect(page.posts[0].likeCount).toBe(2);
-  expect(page.posts[0].commentCount).toBe(2);
+  expect(page.posts[0].shareCount).toBe(7); // depuis _count (modèle Share dédié), pas le legacy (=2)
+  expect(page.posts[0].commentCount).toBe(5); // depuis _count, pas le legacy (=1)
   expect(page.posts[0].likedByMe).toBe(true);
 });
 

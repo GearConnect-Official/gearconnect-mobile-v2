@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "gearconnect-mobile-v2",
+    "name": "GearConnect",
     "slug": "gearconnect-mobile-v2",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -14,15 +14,37 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "app.gearconnect",
+      "associatedDomains": [
+        "applinks:gearconnect.app"
+      ]
     },
     "android": {
+      "package": "app.gearconnect",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "gearconnect.app",
+              "pathPrefix": "/post"
+            }
+          ],
+          "category": [
+            "BROWSABLE",
+            "DEFAULT"
+          ]
+        }
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -38,7 +60,21 @@
           "cameraPermission": "Autoriser l'appareil photo pour publier."
         }
       ],
-      "expo-video"
+      "expo-video",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true,
+            "packagingOptions": {
+              "exclude": [
+                "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
+              ]
+            }
+          }
+        }
+      ],
+      "expo-secure-store"
     ],
     "experiments": {
       "typedRoutes": true

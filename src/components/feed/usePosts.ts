@@ -1,14 +1,21 @@
 import { useAuth } from '@clerk/expo';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Alert } from 'react-native';
+import { Alert, Share } from 'react-native';
+import { ENV } from '@/config/env';
 import { toggleLike as toggleLikeApi } from '@/services/api/interactionService';
-import { getCurrentUser, getPosts } from '@/services/api/postService';
+import { getCurrentUser, getPostById, getPosts } from '@/services/api/postService';
+import { createShare } from '@/services/api/shareService';
 import type { FeedPost } from '@/types/post.types';
+import { nextLikeState } from './likes';
 
 type LoadMode = 'initial' | 'refresh' | 'more';
 
-/** Charge le feed : pagination par page, pull-to-refresh, dédup et like optimiste. */
-export function usePosts() {
+/**
+ * Charge le feed : pagination, pull-to-refresh, dédup et like optimiste.
+ * Si `initialPostId` est fourni (lien partagé), ce post est épinglé en tête
+ * de feed et la suite défile normalement en dessous.
+ */
+export function usePosts(initialPostId?: number) {
   const { getToken } = useAuth();
   const [posts, setPosts] = useState<FeedPost[]>([]);
   const [loading, setLoading] = useState(true);
@@ -47,8 +54,20 @@ export function usePosts() {
         const userId = await ensureUserId(token);
         const result = await getPosts(page, userId, token);
         nextPageRef.current = result.nextPage;
+
+        // Sur le premier chargement d'un lien partagé : épingler le post en tête.
+        let pagePosts = result.posts;
+        if (mode !== 'more' && initialPostId != null) {
+          try {
+            const pinned = await getPostById(initialPostId, userId, token);
+            pagePosts = [pinned, ...pagePosts.filter((p) => p.id !== pinned.id)];
+          } catch {
+            // Post partagé introuvable/supprimé : on affiche simplement le feed normal.
+          }
+        }
+
         setPosts((prev) => {
-          if (mode !== 'more') return result.posts;
+          if (mode !== 'more') return pagePosts;
           const seen = new Set(prev.map((p) => p.id));
           return [...prev, ...result.posts.filter((p) => !seen.has(p.id))];
         });
@@ -61,7 +80,7 @@ export function usePosts() {
         setLoadingMore(false);
       }
     },
-    [getToken, ensureUserId],
+    [getToken, ensureUserId, initialPostId],
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: chargement unique au montage.
@@ -87,10 +106,8 @@ export function usePosts() {
       const target = postsRef.current.find((p) => p.id === postId);
       if (!target) return;
       const previous = { likedByMe: target.likedByMe, likeCount: target.likeCount };
-      patchPost(postId, {
-        likedByMe: !previous.likedByMe,
-        likeCount: previous.likeCount + (previous.likedByMe ? -1 : 1),
-      });
+      const next = nextLikeState(previous.likedByMe, previous.likeCount);
+      patchPost(postId, { likedByMe: next.liked, likeCount: next.count });
       try {
         const token = await getToken();
         if (!token) throw new Error('Session expirée, reconnecte-toi.');
@@ -104,5 +121,54 @@ export function usePosts() {
     [getToken, ensureUserId, patchPost],
   );
 
-  return { posts, loading, refreshing, loadingMore, error, refresh, loadMore, toggleLike };
+  const share = useCallback(
+    async (postId: number) => {
+      const target = postsRef.current.find((p) => p.id === postId);
+      if (!target) return;
+
+      // 1) Ouvrir la popup native de partage EN PREMIER — rien ne doit l'empêcher.
+      // Lien public (App/Universal Link) : ouvre l'app sur le post si installée.
+      const postLink = `${ENV.webUrl}/post/${postId}`;
+      const author = target.author.username;
+      const snippet = target.body?.trim();
+      // Message lisible et signé GearConnect (la prévisualisation riche viendra
+      // de la page web /post/:id avec ses balises Open Graph).
+      const message = snippet
+        ? `« ${snippet} »\n\n— ${author} sur GearConnect 🏁\n${postLink}`
+        : `Découvre ce post de ${author} sur GearConnect 🏁\n${postLink}`;
+      let result: Awaited<ReturnType<typeof Share.share>>;
+      try {
+        result = await Share.share({ message, title: 'GearConnect' });
+      } catch {
+        Alert.alert('Erreur', 'Impossible d’ouvrir le partage.');
+        return;
+      }
+      if (result.action !== Share.sharedAction) return;
+
+      // 2) L'utilisateur a bien partagé : enregistrer l'événement + incrémenter (optimiste).
+      patchPost(postId, { shareCount: target.shareCount + 1 });
+      try {
+        const token = await getToken();
+        if (!token) throw new Error('Session expirée, reconnecte-toi.');
+        const userId = await ensureUserId(token);
+        await createShare(postId, userId, token);
+      } catch {
+        patchPost(postId, { shareCount: target.shareCount });
+        Alert.alert('Erreur', 'Impossible d’enregistrer le partage.');
+      }
+    },
+    [getToken, ensureUserId, patchPost],
+  );
+
+  return {
+    posts,
+    loading,
+    refreshing,
+    loadingMore,
+    error,
+    refresh,
+    loadMore,
+    toggleLike,
+    share,
+  };
 }
