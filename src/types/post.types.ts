@@ -42,7 +42,7 @@ export interface Post {
   interactions?: PostInteraction[];
   isFavorited?: boolean;
   favoritesCount?: number;
-  _count?: { comments: number };
+  _count?: { comments: number; shares: number };
 }
 
 /** Interaction (like/share/comment) accompagnant un post renvoyé par l'API. */

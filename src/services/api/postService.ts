@@ -21,7 +21,8 @@ function toFeedPost(post: Post, currentUserId: number): FeedPost {
     media: post.media,
     likeCount: interactions.filter((i) => i.like).length,
     commentCount: post._count?.comments ?? 0,
-    shareCount: interactions.filter((i) => i.share).length,
+    // Le partage est un événement append-only (modèle Share dédié) : compté via _count.
+    shareCount: post._count?.shares ?? 0,
     likedByMe: interactions.some((i) => i.userId === currentUserId && i.like),
   };
 }
@@ -43,6 +44,22 @@ export async function getPosts(
     posts: data.map((p) => toFeedPost(p, currentUserId)),
     nextPage: data.length === PAGE_SIZE ? page + 1 : null,
   };
+}
+
+/** Récupère un post seul (GET /posts/:id) et le normalise en FeedPost. */
+export async function getPostById(
+  id: number,
+  currentUserId: number,
+  token: string,
+): Promise<FeedPost> {
+  const res = await fetch(`${BASE}/posts/${id}?userId=${currentUserId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) {
+    throw new Error('Impossible de charger le post partagé.');
+  }
+  const data: Post = await res.json();
+  return toFeedPost(data, currentUserId);
 }
 
 /** Récupère le profil de l'utilisateur connecté (id interne, pseudo, avatar DB) via GET /auth/me. */

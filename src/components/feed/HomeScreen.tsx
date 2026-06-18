@@ -4,7 +4,6 @@ import { useRouter } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   Pressable,
   RefreshControl,
@@ -21,12 +20,17 @@ import { usePosts } from './usePosts';
 
 const VIEWABILITY_CONFIG = { itemVisiblePercentThreshold: 70, minimumViewTime: 250 };
 
+interface Props {
+  /** Si fourni (lien partagé), ce post est épinglé en tête du feed. */
+  initialPostId?: number;
+}
+
 /** Écran d'accueil : feed des posts (scroll infini + pull-to-refresh). */
-export default function HomeScreen() {
+export default function HomeScreen({ initialPostId }: Props = {}) {
   const router = useRouter();
   const { signOut } = useAuth();
-  const { posts, loading, refreshing, loadingMore, error, refresh, loadMore, toggleLike } =
-    usePosts();
+  const { posts, loading, refreshing, loadingMore, error, refresh, loadMore, toggleLike, share } =
+    usePosts(initialPostId);
 
   const [activeId, setActiveId] = useState<number | null>(null);
 
@@ -40,7 +44,6 @@ export default function HomeScreen() {
     (postId: number) => router.push(`/comments?id=${postId}`),
     [router],
   );
-  const onShare = useCallback(() => Alert.alert('Partager', 'Bientôt disponible.'), []);
 
   const renderItem = useCallback(
     ({ item }: { item: FeedPost }) => (
@@ -49,10 +52,10 @@ export default function HomeScreen() {
         active={item.id === activeId}
         onToggleLike={toggleLike}
         onComment={onComment}
-        onShare={onShare}
+        onShare={share}
       />
     ),
-    [activeId, toggleLike, onComment, onShare],
+    [activeId, toggleLike, onComment, share],
   );
 
   return (

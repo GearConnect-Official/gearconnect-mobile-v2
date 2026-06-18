@@ -8,13 +8,14 @@ import type { FeedPost } from '@/types/post.types';
 import { withCloudinaryAuto } from '@/utils/mediaUtils';
 import { LikeButton } from './likes';
 import MediaCarousel from './MediaCarousel';
+import { ShareButton } from './shares';
 
 interface Props {
   post: FeedPost;
   active?: boolean;
   onToggleLike: (postId: number) => void;
   onComment?: (postId: number) => void;
-  onShare?: (postId: number) => void;
+  onShare: (postId: number) => void;
   onOpenProfile?: (userId: number) => void;
 }
 
@@ -64,10 +65,7 @@ function PostItem({
           {commentCount > 0 && <Text style={styles.actionCount}>{commentCount}</Text>}
         </Pressable>
 
-        <Pressable style={styles.action} onPress={() => onShare?.(post.id)} hitSlop={8}>
-          <FontAwesome name="share" size={20} color={palette.black} />
-          {shareCount > 0 && <Text style={styles.actionCount}>{shareCount}</Text>}
-        </Pressable>
+        <ShareButton count={shareCount} onPress={() => onShare(post.id)} />
       </View>
 
       {body.length > 0 && <Text style={styles.body}>{body}</Text>}
