@@ -7,5 +7,5 @@ export default function Map() {
         { id: '3', latitude: 48.8606, longitude: 2.3376, title: 'Marker 3' },
     ];
     
-    return <MapScreen markers={markers} />
+    return <MapScreen/>
 }

@@ -15,7 +15,13 @@ module.exports = {
     },
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "com.anonymous.gearconnectmobilev2"
+      bundleIdentifier: "com.anonymous.gearconnectmobilev2",
+
+        infoPlist: {
+            NSAppTransportSecurity: {
+                NSAllowsArbitraryLoads: true,
+            },
+        },
     },
     android: {
       adaptiveIcon: {
