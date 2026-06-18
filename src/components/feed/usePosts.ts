@@ -129,10 +129,16 @@ export function usePosts(initialPostId?: number) {
       // 1) Ouvrir la popup native de partage EN PREMIER — rien ne doit l'empêcher.
       // Lien public (App/Universal Link) : ouvre l'app sur le post si installée.
       const postLink = `${ENV.webUrl}/post/${postId}`;
-      const message = target.body ? `${target.body}\n\n${postLink}` : postLink;
+      const author = target.author.username;
+      const snippet = target.body?.trim();
+      // Message lisible et signé GearConnect (la prévisualisation riche viendra
+      // de la page web /post/:id avec ses balises Open Graph).
+      const message = snippet
+        ? `« ${snippet} »\n\n— ${author} sur GearConnect 🏁\n${postLink}`
+        : `Découvre ce post de ${author} sur GearConnect 🏁\n${postLink}`;
       let result: Awaited<ReturnType<typeof Share.share>>;
       try {
-        result = await Share.share({ message });
+        result = await Share.share({ message, title: 'GearConnect' });
       } catch {
         Alert.alert('Erreur', 'Impossible d’ouvrir le partage.');
         return;

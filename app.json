@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "gearconnect-mobile-v2",
+    "name": "GearConnect",
     "slug": "gearconnect-mobile-v2",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -65,6 +65,7 @@
         "expo-build-properties",
         {
           "android": {
+            "usesCleartextTraffic": true,
             "packagingOptions": {
               "exclude": [
                 "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
