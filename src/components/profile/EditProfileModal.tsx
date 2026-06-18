@@ -1,7 +1,18 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
-import { ActivityIndicator, Alert, Modal, Pressable, Text, TextInput, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Keyboard,
+  KeyboardAvoidingView,
+  Modal,
+  Platform,
+  Pressable,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { palette } from '@/styles/colors';
 import { styles } from '@/styles/editProfileModal.styles';
 import type { UserProfile } from '@/types/user.types';
@@ -49,8 +60,12 @@ export default function EditProfileModal({ visible, profile, onClose, onSaved }:
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      <View style={styles.backdrop}>
-        <View style={styles.card}>
+      <KeyboardAvoidingView
+        style={styles.flex}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <Pressable style={styles.backdrop} onPress={Keyboard.dismiss}>
+          <Pressable style={styles.card} onPress={Keyboard.dismiss}>
           <Text style={styles.title}>Modifier le profil</Text>
 
           <Pressable style={styles.avatarPicker} onPress={pickImage} hitSlop={8}>
@@ -92,8 +107,9 @@ export default function EditProfileModal({ visible, profile, onClose, onSaved }:
               )}
             </Pressable>
           </View>
-        </View>
-      </View>
+          </Pressable>
+        </Pressable>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }

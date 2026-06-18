@@ -4,6 +4,9 @@ import { spacing } from './spacing';
 import { typography } from './typography';
 
 export const styles = StyleSheet.create({
+  flex: {
+    flex: 1,
+  },
   backdrop: {
     flex: 1,
     justifyContent: 'flex-end',
