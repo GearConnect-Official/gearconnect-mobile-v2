@@ -54,7 +54,10 @@ module.exports = {
         "locationPermission": "Autoriser l'accès à la localisation pour afficher les lieux à proximité."
       }],
       ["expo-build-properties", { "ios": { "useModularHeaders": true } }],
-      ["expo-secure-store"]
+      ["expo-secure-store"],
+      ["expo-location", {
+  "locationWhenInUsePermission": "Autoriser l'accès à la localisation pour afficher les événements à proximité."
+}]
     ],
     "experiments": {
       "typedRoutes": true

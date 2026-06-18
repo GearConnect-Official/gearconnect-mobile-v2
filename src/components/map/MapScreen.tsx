@@ -1,19 +1,9 @@
-import { Platform, View } from "react-native";
+import { ActivityIndicator, Platform, View } from "react-native";
 import { AppleMaps, GoogleMaps } from "expo-maps";
 import { styles } from "@/styles/map.styles";
+import { MapMarker, useMap } from "./useMap";
+import { useRouter } from "expo-router";
 
-
-
-type MapMarker = {
-    id: string;
-    latitude: number;
-    longitude: number;
-    title: string;
-};
-
-interface Props {
-    markers: MapMarker[];
-}
 
 
 function toAppleMarkers(markers: MapMarker[]): AppleMaps.Marker[] {
@@ -38,14 +28,28 @@ function toGoogleMarkers(markers: MapMarker[]): GoogleMaps.Marker[] {
     }));
 }
 
-/** Carte interactive affichant des markers géocalisés */
-export default function MapScreen({ markers }: Props) {
+/** Carte interactive affichant les événements proches sous forme de markers. */
+export default function MapScreen() {
+      const { cameraPosition, isLoading, markers } = useMap();
+      const router = useRouter();
+
+    function handleMarkerClick(marker: {id?: string}){
+        if (marker.id){
+            router.push(`/eventDetail?id=${marker.id}`);
+        }
+    }
+      if (isLoading)
+      return (
+        <View style={styles.container}>
+            <ActivityIndicator/>
+        </View>
+        )
 
 return (
     <View style={styles.container}>
   {Platform.OS === 'ios'
-    ? <AppleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.8566, longitude: 2.3522 }, zoom: 10 }} markers={toAppleMarkers(markers)} />
-    : <GoogleMaps.View style={styles.map} cameraPosition={{ coordinates: { latitude: 48.8566, longitude: 2.3522 }, zoom: 10 }} markers={toGoogleMarkers(markers)} />
+    ? <AppleMaps.View style={styles.map} cameraPosition={ cameraPosition } markers={toAppleMarkers(markers)} onMarkerClick={handleMarkerClick}/>
+    : <GoogleMaps.View style={styles.map} cameraPosition={ cameraPosition } markers={toGoogleMarkers(markers)} onMarkerClick={handleMarkerClick}/>
   }
 </View>
 )
