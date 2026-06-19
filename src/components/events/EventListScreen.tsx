@@ -19,7 +19,7 @@ export default function EventListScreen() {
     <View style={styles.container}>
       <FlatList
         data={events}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => <EventItem event={item} />}
         contentContainerStyle={styles.list}
       />

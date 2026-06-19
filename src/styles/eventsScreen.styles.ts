@@ -32,4 +32,20 @@ export const styles = StyleSheet.create({
   toggleTextActive: {
     color: palette.gray900,
   },
+  fab: {
+    position: 'absolute',
+    bottom: spacing.lg,
+    right: spacing.lg,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: palette.primary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  fabText: {
+    color: palette.white,
+    fontSize: 28,
+    lineHeight: 32,
+  },
 });

@@ -9,5 +9,6 @@ export const styles = StyleSheet.create({
   },
   list: {
     paddingVertical: spacing.md,
+    color: palette.gray900,
   },
 });

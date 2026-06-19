@@ -1,12 +1,10 @@
 export type Event = {
-    id: string;
-    title: string;
+    id: number;
+    name: string;
     description: string;
-    location: {
-        name: string;
-        latitude: number;
-        longitude: number;
-    };
+    location: string;
+    latitude: number | null;
+    longitude: number | null;
     date: string;
     organizerId: string;
     participantIds: number[];

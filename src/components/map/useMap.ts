@@ -11,11 +11,13 @@ export type MapMarker = {
 }
 
 function toMapMarkers(events: Event[]): MapMarker[] {
-    return events.map((event) =>({
-        id: event.id,
-        latitude: event.location.latitude,
-        longitude: event.location.longitude,
-        title: event.title,
+    return events
+    .filter(e => e.latitude !== null && e.longitude !== null)
+    .map((event) =>({
+        id: String(event.id),
+        latitude: event.latitude!,
+        longitude: event.longitude!,
+        title: event.name,
     }))
 }
 
@@ -46,7 +48,7 @@ export function useMap(){
             const events = await getEventsNearby(
                   location.coords.latitude,
                   location.coords.longitude,
-                  50,
+                  1000,
             );
             setMarkers(toMapMarkers(events));
             setIsLoading(false);

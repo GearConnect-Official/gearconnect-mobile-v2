@@ -1,4 +1,5 @@
-import { Text, View } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
+import { useRouter } from 'expo-router';
 import type { Event } from '@/types/event.types';
 import { styles } from '@/styles/eventItem.styles';
 
@@ -7,12 +8,14 @@ interface Props{
 }
 
 /** Card affichant le résumé d'un événement de course. */
-export default function EventItem({ event }: Props) { 
+export default function EventItem({ event }: Props) {
+    const router = useRouter();
+
     return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{event.title}</Text>
-      <Text style={styles.circuit}>{event.location.name}</Text>
+    <TouchableOpacity style={styles.container} onPress={() => router.push(`/eventDetail?id=${event.id}`)}>
+      <Text style={styles.title}>{event.name}</Text>
+      <Text style={styles.circuit}>{event.location}</Text>
       <Text style={styles.date}>{event.date}</Text>
-    </View>
+    </TouchableOpacity>
   );
- }
+}

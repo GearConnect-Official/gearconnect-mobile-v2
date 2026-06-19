@@ -12,7 +12,7 @@ export function useEventDetail(id: string) {
     const [currentUserId, setCurrentUserId] = useState<number | null>(null);
     const { getToken } = useAuth();
     const isAlreadyJoined = currentUserId !== null
-    ? (event?.participantIds.includes(currentUserId) ?? false)
+    ? (event?.participantIds?.includes(currentUserId) ?? false)
     : false;
 
     useEffect(() => {
@@ -37,7 +37,7 @@ export function useEventDetail(id: string) {
         await joinEvent(id, token);
         setEvent((prev) =>
         prev && currentUserId
-        ? { ...prev, participantIds: [...prev.participantIds, currentUserId]} : prev
+        ? { ...prev, participantIds: [...(prev.participantIds ?? []), currentUserId]} : prev
         );
         setIsJoining(false);
     }

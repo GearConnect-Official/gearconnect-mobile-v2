@@ -20,11 +20,11 @@ export default function EventDetailScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{event.title}</Text>
-      <Text style={styles.circuit}>{event.location.name}</Text>
+      <Text style={styles.title}>{event.name}</Text>
+      <Text style={styles.circuit}>{event.location}</Text>
       <Text style={styles.date}>{event.date}</Text>
       <Text style={styles.participants}>
-        {event.participantIds.length} participant(s)
+        {(event.participantIds ?? []).length} participant(s)
       </Text>
       <TouchableOpacity
         style={[styles.joinBtn, (isJoining || isAlreadyJoined) && styles.joinBtnDisabled]}

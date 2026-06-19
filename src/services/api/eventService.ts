@@ -42,3 +42,26 @@ export async function joinEvent(id: string, token: string): Promise<void> {
     throw new Error('Impossible de rejoindre l\'événement.');
   }
 }
+
+export async function createEvent(data: {
+  name: string;
+  date: string;
+  location: string;
+  latitude: number | null;
+  longitude: number | null;
+  creatorId: number;
+}, token: string): Promise<Event> {
+  const res = await fetch(`${BASE}/events`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    throw new Error('Impossible de créer l\'événement.');
+  }
+  return res.json();
+}
+

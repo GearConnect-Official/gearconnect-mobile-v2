@@ -8,12 +8,14 @@ export const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: palette.gray100,
     padding: spacing.md,
+    paddingTop: spacing.header,
   },
   title: {
     fontSize: typography.title.fontSize,
     fontWeight: typography.title.fontWeight,
     color: palette.gray900,
     marginBottom: spacing.sm,
+    marginTop: spacing.md,
   },
   circuit: {
     fontSize: typography.body.fontSize,
