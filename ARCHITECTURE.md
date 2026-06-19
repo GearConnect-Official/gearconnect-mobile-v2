@@ -30,8 +30,9 @@ gearconnect-mobile-v2/
 │       ├── _layout.tsx                    # App layout (auth check, providers app)
 │       │
 │       ├── (tabs)/                        # --- Tab navigation ---
-│       │   ├── _layout.tsx                # Tab bar config (home, events, publications)
+│       │   ├── _layout.tsx                # Tab bar config (home, profile, events, publications)
 │       │   ├── home.tsx
+│       │   ├── profile.tsx                # Profil de l'utilisateur connecté (wrapper -> ProfileScreen)
 │       │   ├── events.tsx
 │       │   └── publications.tsx
 │       │
@@ -114,10 +115,12 @@ gearconnect-mobile-v2/
 │   │   │   └── index.ts
 │   │   │
 │   │   ├── profile/                       # Composants profil
-│   │   │   ├── ProfileAvatar.tsx
-│   │   │   ├── ProfileMenu.tsx
-│   │   │   ├── ProfilePictureUpload.tsx
-│   │   │   ├── FollowButton.tsx
+│   │   │   ├── ProfileScreen.tsx          # Écran profil (orchestrateur : useProfile + onglets)
+│   │   │   ├── ProfileHeader.tsx          # Photo, pseudo, description, bouton "Modifier"
+│   │   │   ├── ProfileGrid.tsx            # Grille 3 colonnes des posts (publications / likés)
+│   │   │   ├── EditProfileModal.tsx       # Popup : changer photo + description
+│   │   │   ├── useProfile.ts              # Logique : profil + posts/likés paginés
+│   │   │   ├── useEditProfile.ts          # Logique : édition photo + description
 │   │   │   └── index.ts
 │   │   │
 │   │   ├── events/                        # Composants événements
