@@ -1,8 +1,7 @@
 import { act, renderHook } from '@testing-library/react-native';
-import { useEventDetail } from './useEventDetail';
 import { getEventById, joinEvent } from '@/services/api/eventService';
 import { getCurrentUser } from '@/services/api/postService';
-
+import { useEventDetail } from './useEventDetail';
 
 jest.mock('@/services/api/eventService', () => ({
   getEventById: jest.fn(),
@@ -33,8 +32,11 @@ beforeEach(() => {
 
 test('fetch réussi', async () => {
   (getEventById as jest.Mock).mockResolvedValue(mockEvent);
-  (getCurrentUser as jest.Mock).mockResolvedValue({ id: 42, username: 'pilote1', profilePicture: null });
-
+  (getCurrentUser as jest.Mock).mockResolvedValue({
+    id: 42,
+    username: 'pilote1',
+    profilePicture: null,
+  });
 
   const { result } = await renderHook(() => useEventDetail('1'));
   await act(async () => {});
@@ -46,7 +48,11 @@ test('fetch réussi', async () => {
 test('join appelle joinEvent et met à jour participantIds', async () => {
   (getEventById as jest.Mock).mockResolvedValue(mockEvent);
   (joinEvent as jest.Mock).mockResolvedValue(undefined);
-  (getCurrentUser as jest.Mock).mockResolvedValue({ id: 42, username: 'pilote1', profilePicture: null });
+  (getCurrentUser as jest.Mock).mockResolvedValue({
+    id: 42,
+    username: 'pilote1',
+    profilePicture: null,
+  });
   mockGetToken.mockResolvedValue('token-123');
 
   const { result } = await renderHook(() => useEventDetail('1'));
@@ -63,7 +69,11 @@ test('join appelle joinEvent et met à jour participantIds', async () => {
 
 test('join sans token ne appelle pas joinEvent', async () => {
   (getEventById as jest.Mock).mockResolvedValue(mockEvent);
-  (getCurrentUser as jest.Mock).mockResolvedValue({ id: 42, username: 'pilote1', profilePicture: null });
+  (getCurrentUser as jest.Mock).mockResolvedValue({
+    id: 42,
+    username: 'pilote1',
+    profilePicture: null,
+  });
   mockGetToken.mockResolvedValue(null);
 
   const { result } = await renderHook(() => useEventDetail('1'));
@@ -81,7 +91,11 @@ test('isAlreadyJoined est true si userId déjà dans participantIds', async () =
     ...mockEvent,
     participantIds: [42],
   });
-  (getCurrentUser as jest.Mock).mockResolvedValue({ id: 42, username: 'pilote1', profilePicture: null });
+  (getCurrentUser as jest.Mock).mockResolvedValue({
+    id: 42,
+    username: 'pilote1',
+    profilePicture: null,
+  });
   mockGetToken.mockResolvedValue('token-123');
 
   const { result } = await renderHook(() => useEventDetail('1'));

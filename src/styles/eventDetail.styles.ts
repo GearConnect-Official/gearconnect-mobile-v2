@@ -50,5 +50,3 @@ export const styles = StyleSheet.create({
     color: palette.white,
   },
 });
-
-

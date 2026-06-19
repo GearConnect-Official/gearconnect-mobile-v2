@@ -1,7 +1,7 @@
-import { useState } from 'react';
-import * as Location from 'expo-location';
 import { useAuth } from '@clerk/expo';
+import * as Location from 'expo-location';
 import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { createEvent } from '@/services/api/eventService';
 import { getCurrentUser } from '@/services/api/postService';
 
@@ -63,11 +63,18 @@ export function useCreateEvent() {
   }
 
   return {
-    name, setName,
-    date, setDate,
-    address, setAddress,
-    latitude, longitude,
-    isGeocoding, isSubmitting, error,
-    geocodeAddress, submit,
+    name,
+    setName,
+    date,
+    setDate,
+    address,
+    setAddress,
+    latitude,
+    longitude,
+    isGeocoding,
+    isSubmitting,
+    error,
+    geocodeAddress,
+    submit,
   };
 }

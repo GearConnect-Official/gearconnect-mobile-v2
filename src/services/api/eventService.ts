@@ -1,20 +1,20 @@
-import { ENV } from '@/config/env'
-import { Event } from '@/types/event.types'
+import { ENV } from '@/config/env';
+import type { Event } from '@/types/event.types';
 
-const BASE = ENV.apiUrl
+const BASE = ENV.apiUrl;
 
 export async function getEventsNearby(
-    latitude: number,
-    longitude: number,
-    radiusKm: number,
+  latitude: number,
+  longitude: number,
+  radiusKm: number,
 ): Promise<Event[]> {
-    const res = await fetch(
-        `${BASE}/events/nearby?lat=${latitude}&lng=${longitude}&radius=${radiusKm}`,
-    );
-    if (!res.ok){
-        throw new Error('Impossible de récupérer les événements.');
-    }
-    return res.json();
+  const res = await fetch(
+    `${BASE}/events/nearby?lat=${latitude}&lng=${longitude}&radius=${radiusKm}`,
+  );
+  if (!res.ok) {
+    throw new Error('Impossible de récupérer les événements.');
+  }
+  return res.json();
 }
 
 export async function getAllEvents(): Promise<Event[]> {
@@ -28,29 +28,32 @@ export async function getAllEvents(): Promise<Event[]> {
 export async function getEventById(id: string): Promise<Event> {
   const res = await fetch(`${BASE}/events/${id}`);
   if (!res.ok) {
-    throw new Error('Impossible de récupérer l\'événement.');
+    throw new Error("Impossible de récupérer l'événement.");
   }
   return res.json();
 }
 
 export async function joinEvent(id: string, token: string): Promise<void> {
   const res = await fetch(`${BASE}/events/${id}/join`, {
-  method: 'POST',
-  headers: { Authorization: `Bearer ${token}` },
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) {
-    throw new Error('Impossible de rejoindre l\'événement.');
+    throw new Error("Impossible de rejoindre l'événement.");
   }
 }
 
-export async function createEvent(data: {
-  name: string;
-  date: string;
-  location: string;
-  latitude: number | null;
-  longitude: number | null;
-  creatorId: number;
-}, token: string): Promise<Event> {
+export async function createEvent(
+  data: {
+    name: string;
+    date: string;
+    location: string;
+    latitude: number | null;
+    longitude: number | null;
+    creatorId: number;
+  },
+  token: string,
+): Promise<Event> {
   const res = await fetch(`${BASE}/events`, {
     method: 'POST',
     headers: {
@@ -60,8 +63,7 @@ export async function createEvent(data: {
     body: JSON.stringify(data),
   });
   if (!res.ok) {
-    throw new Error('Impossible de créer l\'événement.');
+    throw new Error("Impossible de créer l'événement.");
   }
   return res.json();
 }
-

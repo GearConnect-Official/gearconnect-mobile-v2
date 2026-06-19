@@ -1,7 +1,7 @@
 import { ActivityIndicator, FlatList, View } from 'react-native';
-import { useEvents } from './useEvents';
-import EventItem from './EventItem';
 import { styles } from '@/styles/eventList.styles';
+import EventItem from './EventItem';
+import { useEvents } from './useEvents';
 
 /** Liste de tous les événements de l'application. */
 export default function EventListScreen() {
