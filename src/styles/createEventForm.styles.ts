@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     padding: spacing.md,
     fontSize: typography.body.fontSize,
-    color: palette.black,
+    color: palette.gray900,
     backgroundColor: palette.white,
     marginBottom: spacing.md,
     marginTop: spacing.md,
@@ -50,3 +50,5 @@ export const styles = StyleSheet.create({
     marginVertical: spacing.md,
   },
 });
+
+export const placeholderColor = palette.gray500;

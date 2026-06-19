@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: palette.gray100,
+    paddingTop: spacing.header,
   },
   toggle: {
     flexDirection: 'row',

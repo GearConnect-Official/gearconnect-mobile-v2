@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from 'react-native';
-import { styles } from '@/styles/createEventForm.styles';
+import { placeholderColor, styles } from '@/styles/createEventForm.styles';
 import { useCreateEvent } from './useCreateEvent';
 
 /** Formulaire de création d'un événement avec géocodage d'adresse. */
@@ -35,12 +35,14 @@ export default function CreateEventForm() {
         value={name}
         onChangeText={setName}
         style={styles.input}
+        placeholderTextColor={placeholderColor}
       />
       <TextInput
         placeholder="Date (ex: 2026-08-15)"
         value={date}
         onChangeText={setDate}
         style={styles.input}
+        placeholderTextColor={placeholderColor}
       />
 
       <TextInput
@@ -48,6 +50,7 @@ export default function CreateEventForm() {
         value={address}
         onChangeText={setAddress}
         style={styles.input}
+        placeholderTextColor={placeholderColor}
       />
       <TouchableOpacity onPress={geocodeAddress} style={styles.button} disabled={isGeocoding}>
         {isGeocoding ? (
