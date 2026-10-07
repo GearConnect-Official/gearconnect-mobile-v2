@@ -128,3 +128,58 @@ test('removeComment retire le commentaire de la liste', async () => {
 
   expect(result.current.comments.map((c) => c.id)).toEqual([2]);
 });
+
+test('submit publie un commentaire et vide le brouillon', async () => {
+  mockGetComments.mockResolvedValue({ comments: [comment(1)], nextPage: null });
+  mockCreateComment.mockResolvedValue(comment(99));
+
+  const { result } = await renderHook(() => useComments(7));
+  await waitFor(() => expect(result.current.comments).toHaveLength(1));
+
+  await act(async () => {
+    result.current.setDraft('  salut  ');
+  });
+  await act(async () => {
+    await result.current.submit();
+  });
+
+  expect(mockCreateComment).toHaveBeenCalledWith(7, 1, 'salut', 'tok');
+  expect(result.current.draft).toBe('');
+  expect(result.current.comments.map((c) => c.id)).toEqual([99, 1]);
+});
+
+test('submit publie une réponse quand replyingTo est défini, puis le réinitialise', async () => {
+  mockGetComments.mockResolvedValue({ comments: [comment(1)], nextPage: null });
+  mockCreateComment.mockResolvedValue(comment(50));
+
+  const { result } = await renderHook(() => useComments(7));
+  await waitFor(() => expect(result.current.comments).toHaveLength(1));
+
+  await act(async () => {
+    result.current.setReplyingTo(result.current.comments[0]);
+    result.current.setDraft('ma réponse');
+  });
+  await act(async () => {
+    await result.current.submit();
+  });
+
+  expect(mockCreateComment).toHaveBeenCalledWith(7, 1, 'ma réponse', 'tok', 1);
+  expect(result.current.replyingTo).toBeNull();
+  expect(result.current.comments[0].replies?.map((r) => r.id)).toEqual([50]);
+});
+
+test('submit ne fait rien si le brouillon est vide', async () => {
+  mockGetComments.mockResolvedValue({ comments: [], nextPage: null });
+
+  const { result } = await renderHook(() => useComments(7));
+  await waitFor(() => expect(result.current.loading).toBe(false));
+
+  await act(async () => {
+    result.current.setDraft('   ');
+  });
+  await act(async () => {
+    await result.current.submit();
+  });
+
+  expect(mockCreateComment).not.toHaveBeenCalled();
+});

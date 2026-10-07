@@ -1,5 +1,5 @@
 import type { Post } from '@/types/post.types';
-import { getPosts } from './postService';
+import { getPostById, getPosts } from './postService';
 
 const mockFetch = jest.fn();
 global.fetch = mockFetch as unknown as typeof fetch;
@@ -68,4 +68,34 @@ test('lève une erreur si la réponse n’est pas ok', async () => {
   resolveWith(null, false);
 
   await expect(getPosts(1, 1, 'tok')).rejects.toThrow('Impossible de charger le feed.');
+});
+
+test('getPostById appelle GET /posts/:id et normalise le post', async () => {
+  resolveWith(
+    apiPost({
+      id: 42,
+      interactions: [{ userId: 1, like: true, share: false, comment: null }],
+      _count: { comments: 2, shares: 3 },
+    }),
+  );
+
+  const post = await getPostById(42, 1, 'tok');
+
+  expect(mockFetch).toHaveBeenCalledWith(
+    expect.stringMatching(/\/posts\/42\?userId=1$/),
+    expect.objectContaining({ headers: { Authorization: 'Bearer tok' } }),
+  );
+  expect(post).toMatchObject({
+    id: 42,
+    likeCount: 1,
+    commentCount: 2,
+    shareCount: 3,
+    likedByMe: true,
+  });
+});
+
+test('getPostById lève une erreur si la réponse n’est pas ok', async () => {
+  resolveWith(null, false);
+
+  await expect(getPostById(42, 1, 'tok')).rejects.toThrow('Impossible de charger le post partagé.');
 });

@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { palette } from './colors';
+import { avatarSize, radius } from './sizes';
 import { spacing } from './spacing';
 import { typography } from './typography';
 
@@ -13,9 +14,9 @@ export const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   avatar: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
+    width: avatarSize.sm,
+    height: avatarSize.sm,
+    borderRadius: radius.full,
     backgroundColor: palette.gray200,
   },
   avatarFallback: {

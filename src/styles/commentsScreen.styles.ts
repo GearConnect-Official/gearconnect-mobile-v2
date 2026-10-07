@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { palette } from './colors';
+import { radius } from './sizes';
 import { spacing } from './spacing';
 import { typography } from './typography';
 
@@ -21,8 +22,8 @@ export const styles = StyleSheet.create({
     borderBottomColor: palette.gray200,
   },
   headerTitle: {
-    fontSize: 16,
-    fontWeight: typography.label.fontWeight,
+    fontSize: typography.subtitle.fontSize,
+    fontWeight: typography.subtitle.fontWeight,
     color: palette.black,
   },
   center: {
@@ -71,7 +72,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
     backgroundColor: palette.gray100,
-    borderRadius: 20,
+    borderRadius: radius.lg,
     fontSize: typography.body.fontSize,
     color: palette.black,
   },

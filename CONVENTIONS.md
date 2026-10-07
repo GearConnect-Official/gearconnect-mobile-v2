@@ -262,8 +262,13 @@ mais restent documentées pour comprendre _pourquoi_ le code est formaté ainsi.
   ✅ src/styles/auth.styles.ts
   ```
 
+- Si plusieurs composants partagent exactement les mêmes styles, un seul
+  fichier nommé d'après leur rôle commun plutôt qu'un doublon par composant
+  (ex. `actionButton.styles.ts` pour `LikeButton` et `ShareButton`).
+
 - **Design tokens obligatoires** : utiliser `palette` (`src/styles/colors.ts`),
-  `typography` (`typography.ts`) et `spacing` (`spacing.ts`) plutôt que des
+  `typography` (`typography.ts`), `spacing` (`spacing.ts`) et `radius` /
+  `avatarSize` (`sizes.ts`) plutôt que des
   valeurs en dur (`'#2f95dc'`, `16`, `'600'`...). Si la couleur/taille dont tu
   as besoin n'existe pas encore dans les tokens, l'ajouter au token plutôt que
   de la dupliquer en dur.

@@ -250,7 +250,8 @@ gearconnect-mobile-v2/
 │   │   ├── theme.ts
 │   │   ├── colors.ts
 │   │   ├── typography.ts
-│   │   └── spacing.ts
+│   │   ├── spacing.ts
+│   │   └── sizes.ts                       # radius (coins arrondis) + avatarSize
 │   │
 │   └── config/                            # Configuration app
 │       ├── constants.ts

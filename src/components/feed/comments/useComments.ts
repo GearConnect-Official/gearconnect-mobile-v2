@@ -53,6 +53,8 @@ export function useComments(postId: number) {
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentUserId, setCurrentUserId] = useState<number | null>(null);
+  const [draft, setDraft] = useState('');
+  const [replyingTo, setReplyingTo] = useState<FeedComment | null>(null);
 
   const nextPageRef = useRef<number | null>(1);
   const userIdRef = useRef<number | null>(null);
@@ -150,6 +152,20 @@ export function useComments(postId: number) {
     [getToken, ensureUserId, postId],
   );
 
+  const submit = useCallback(async () => {
+    const text = draft.trim();
+    if (!text) return;
+    const parent = replyingTo;
+    setDraft('');
+    setReplyingTo(null);
+    try {
+      if (parent) await addReply(parent.id, text);
+      else await addComment(text);
+    } catch (e) {
+      Alert.alert('Échec', e instanceof Error ? e.message : 'Impossible de publier.');
+    }
+  }, [draft, replyingTo, addReply, addComment]);
+
   const toggleCommentLike = useCallback(
     async (commentId: number) => {
       const target = findComment(commentsRef.current, commentId);
@@ -209,6 +225,11 @@ export function useComments(postId: number) {
     loadingMore,
     error,
     currentUserId,
+    draft,
+    setDraft,
+    replyingTo,
+    setReplyingTo,
+    submit,
     refresh,
     loadMore,
     addComment,

@@ -1,6 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { useState } from 'react';
 import {
   Alert,
   FlatList,
@@ -14,7 +13,6 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { palette } from '@/styles/colors';
 import { styles } from '@/styles/commentsScreen.styles';
-import type { FeedComment } from '@/types/comment.types';
 import CommentItem from './CommentItem';
 import { useComments } from './useComments';
 
@@ -29,29 +27,16 @@ export default function CommentsScreen() {
     error,
     refreshing,
     currentUserId,
+    draft,
+    setDraft,
+    replyingTo,
+    setReplyingTo,
+    submit,
     refresh,
     loadMore,
-    addComment,
-    addReply,
     toggleCommentLike,
     removeComment,
   } = useComments(postId);
-  const [text, setText] = useState('');
-  const [replyingTo, setReplyingTo] = useState<FeedComment | null>(null);
-
-  const onSend = async () => {
-    const value = text.trim();
-    if (!value) return;
-    const parent = replyingTo;
-    setText('');
-    setReplyingTo(null);
-    try {
-      if (parent) await addReply(parent.id, value);
-      else await addComment(value);
-    } catch (e) {
-      Alert.alert('Échec', e instanceof Error ? e.message : 'Impossible de publier.');
-    }
-  };
 
   const onDelete = (commentId: number) => {
     Alert.alert('Supprimer', 'Supprimer ce commentaire ?', [
@@ -126,12 +111,12 @@ export default function CommentsScreen() {
         <View style={styles.composer}>
           <TextInput
             style={styles.input}
-            value={text}
-            onChangeText={setText}
+            value={draft}
+            onChangeText={setDraft}
             placeholder={replyingTo ? 'Votre réponse…' : 'Ajouter un commentaire…'}
             placeholderTextColor={palette.gray500}
           />
-          <Pressable style={styles.send} onPress={onSend} hitSlop={8}>
+          <Pressable style={styles.send} onPress={submit} hitSlop={8}>
             <Text style={styles.sendText}>Envoyer</Text>
           </Pressable>
         </View>

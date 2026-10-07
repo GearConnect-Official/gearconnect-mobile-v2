@@ -1,7 +1,7 @@
 import { FontAwesome } from '@expo/vector-icons';
 import { Pressable, Text } from 'react-native';
+import { styles } from '@/styles/actionButton.styles';
 import { palette } from '@/styles/colors';
-import { styles } from '@/styles/likeButton.styles';
 
 interface Props {
   liked: boolean;
