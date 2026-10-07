@@ -99,7 +99,8 @@ export async function getCurrentUser(token: string): Promise<CurrentUser> {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) {
-    throw new Error('Impossible de récupérer le profil utilisateur.');
+    const body = await res.json().catch(() => ({}));
+    throw new Error(`/auth/me ${res.status}: ${body?.error ?? body?.details ?? 'erreur inconnue'}`);
   }
   const data = await res.json();
   return {

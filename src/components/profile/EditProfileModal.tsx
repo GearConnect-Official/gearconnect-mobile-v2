@@ -66,47 +66,47 @@ export default function EditProfileModal({ visible, profile, onClose, onSaved }:
       >
         <Pressable style={styles.backdrop} onPress={Keyboard.dismiss}>
           <Pressable style={styles.card} onPress={Keyboard.dismiss}>
-          <Text style={styles.title}>Modifier le profil</Text>
+            <Text style={styles.title}>Modifier le profil</Text>
 
-          <Pressable style={styles.avatarPicker} onPress={pickImage} hitSlop={8}>
-            {previewUri ? (
-              <Image source={previewUri} style={styles.avatar} contentFit="cover" />
-            ) : (
-              <View style={[styles.avatar, styles.avatarFallback]}>
-                <FontAwesome name="user" size={32} color={palette.white} />
-              </View>
-            )}
-            <Text style={styles.changePhoto}>Changer la photo</Text>
-          </Pressable>
-
-          <Text style={styles.label}>Description</Text>
-          <TextInput
-            style={styles.input}
-            value={description}
-            onChangeText={setDescription}
-            placeholder="Parle un peu de toi…"
-            placeholderTextColor={palette.gray500}
-            multiline
-            maxLength={150}
-          />
-
-          <View style={styles.actions}>
-            <Pressable style={styles.cancel} onPress={onClose} disabled={saving} hitSlop={6}>
-              <Text style={styles.cancelText}>Annuler</Text>
-            </Pressable>
-            <Pressable
-              style={[styles.save, (!dirty || saving) && styles.saveDisabled]}
-              onPress={save}
-              disabled={!dirty || saving}
-              hitSlop={6}
-            >
-              {saving ? (
-                <ActivityIndicator color={palette.white} />
+            <Pressable style={styles.avatarPicker} onPress={pickImage} hitSlop={8}>
+              {previewUri ? (
+                <Image source={previewUri} style={styles.avatar} contentFit="cover" />
               ) : (
-                <Text style={styles.saveText}>Enregistrer</Text>
+                <View style={[styles.avatar, styles.avatarFallback]}>
+                  <FontAwesome name="user" size={32} color={palette.white} />
+                </View>
               )}
+              <Text style={styles.changePhoto}>Changer la photo</Text>
             </Pressable>
-          </View>
+
+            <Text style={styles.label}>Description</Text>
+            <TextInput
+              style={styles.input}
+              value={description}
+              onChangeText={setDescription}
+              placeholder="Parle un peu de toi…"
+              placeholderTextColor={palette.gray500}
+              multiline
+              maxLength={150}
+            />
+
+            <View style={styles.actions}>
+              <Pressable style={styles.cancel} onPress={onClose} disabled={saving} hitSlop={6}>
+                <Text style={styles.cancelText}>Annuler</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.save, (!dirty || saving) && styles.saveDisabled]}
+                onPress={save}
+                disabled={!dirty || saving}
+                hitSlop={6}
+              >
+                {saving ? (
+                  <ActivityIndicator color={palette.white} />
+                ) : (
+                  <Text style={styles.saveText}>Enregistrer</Text>
+                )}
+              </Pressable>
+            </View>
           </Pressable>
         </Pressable>
       </KeyboardAvoidingView>
