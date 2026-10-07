@@ -46,6 +46,10 @@ export default function EditProfileModal({ visible, profile, onClose, onSaved }:
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images'],
       allowsMultipleSelection: false,
+      // Recadrage carré + compression : une photo brute dépasse souvent la limite de 5 Mo du back.
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.7,
     });
     if (result.canceled) return;
     const asset = result.assets[0];

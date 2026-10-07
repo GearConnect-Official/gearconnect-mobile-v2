@@ -2,6 +2,14 @@
   "name": "gearconnect-mobile-v2",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "expo": {
+    "autolinking": {
+      "exclude": [
+        "@solana-mobile/mobile-wallet-adapter-protocol",
+        "@solana-mobile/mobile-wallet-adapter-protocol-web3js"
+      ]
+    }
+  },
   "scripts": {
     "postinstall": "node scripts/patch-clerk.js",
     "start": "expo start",
