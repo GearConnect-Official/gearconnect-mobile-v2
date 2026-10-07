@@ -147,7 +147,7 @@ test("finalise l'inscription, synchronise le backend et redirige", async () => {
     return { error: undefined };
   });
   mockGetToken.mockResolvedValue('token123');
-  global.fetch = jest.fn().mockResolvedValue({
+  globalThis.fetch = jest.fn().mockResolvedValue({
     ok: true,
     json: async () => ({}),
   }) as jest.Mock;
@@ -172,6 +172,6 @@ test("finalise l'inscription, synchronise le backend et redirige", async () => {
   });
 
   expect(mockFinalize).toHaveBeenCalled();
-  expect(global.fetch).toHaveBeenCalled();
+  expect(globalThis.fetch).toHaveBeenCalled();
   expect(mockReplace).toHaveBeenCalledWith('/(app)/(tabs)/home');
 });

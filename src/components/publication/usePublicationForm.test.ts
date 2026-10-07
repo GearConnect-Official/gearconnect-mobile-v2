@@ -11,8 +11,8 @@ const mockCreatePost = jest.fn();
 jest.mock('@clerk/expo', () => ({ useAuth: () => ({ getToken: mockGetToken }) }));
 jest.mock('expo-router', () => ({ useRouter: () => ({ back: mockBack, replace: mockReplace }) }));
 jest.mock('@/services/api/postService', () => ({
-  getCurrentUser: (...args) => mockGetCurrentUser(...args),
-  createPost: (...args) => mockCreatePost(...args),
+  getCurrentUser: (...args: unknown[]) => mockGetCurrentUser(...args),
+  createPost: (...args: unknown[]) => mockCreatePost(...args),
 }));
 
 beforeEach(() => {
