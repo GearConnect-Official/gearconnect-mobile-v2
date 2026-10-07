@@ -4,6 +4,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
 import { styles } from '@/styles/mediaSection.styles';
 import type { MediaType, SelectedMedia } from '@/types/post.types';
+import { palette } from '@/styles/colors';
 
 const MAX_MEDIA = 10;
 
@@ -77,7 +78,7 @@ export default function MediaSection({ media, onChange }: Props) {
           onPress={takePhoto}
           disabled={full}
         >
-          <FontAwesome name="camera" size={20} color="#2f95dc" />
+          <FontAwesome name="camera" size={20} color={palette.primary} />
           <Text style={styles.actionText}>Photo</Text>
         </Pressable>
         <Pressable
@@ -85,7 +86,7 @@ export default function MediaSection({ media, onChange }: Props) {
           onPress={pickFromGallery}
           disabled={full}
         >
-          <FontAwesome name="image" size={20} color="#2f95dc" />
+          <FontAwesome name="image" size={20} color={palette.primary} />
           <Text style={styles.actionText}>Galerie</Text>
         </Pressable>
       </View>
