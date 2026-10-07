@@ -47,6 +47,8 @@ export default function MediaSection({ media, onChange }: Props) {
     }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ['images', 'videos'],
+      // Compression : Cloudinary refuse les images > 10 Mo (une photo brute peut dépasser 30 Mo).
+      quality: 0.8,
       allowsMultipleSelection: true,
       selectionLimit: remaining,
     });
@@ -62,6 +64,8 @@ export default function MediaSection({ media, onChange }: Props) {
     }
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ['images', 'videos'],
+      // Compression : Cloudinary refuse les images > 10 Mo (une photo brute peut dépasser 30 Mo).
+      quality: 0.8,
     });
     if (result.canceled) return;
     addMedia(assetsToMedia(result.assets));
