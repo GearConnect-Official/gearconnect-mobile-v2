@@ -16,18 +16,17 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "app.gearconnect",
-      "associatedDomains": [
-        "applinks:gearconnect.app"
-      ]
+      "associatedDomains": ["applinks:gearconnect.app"]
     },
     "android": {
-      "package": "app.gearconnect",
+      "package": "com.turbotard.gearconnectmobilev2",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
+      "permissions": ["android.permission.RECORD_AUDIO"],
       "intentFilters": [
         {
           "action": "VIEW",
@@ -39,14 +38,9 @@
               "pathPrefix": "/post"
             }
           ],
-          "category": [
-            "BROWSABLE",
-            "DEFAULT"
-          ]
+          "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
-      "permissions": ["android.permission.RECORD_AUDIO", "android.permission.RECORD_AUDIO"],
-      "package": "com.turbotard.gearconnectmobilev2"
     },
     "web": {
       "bundler": "metro",
@@ -69,9 +63,7 @@
           "android": {
             "usesCleartextTraffic": true,
             "packagingOptions": {
-              "exclude": [
-                "META-INF/versions/9/OSGI-INF/MANIFEST.MF"
-              ]
+              "exclude": ["META-INF/versions/9/OSGI-INF/MANIFEST.MF"]
             }
           }
         }
