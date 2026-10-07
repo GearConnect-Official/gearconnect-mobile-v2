@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { palette } from './colors';
 
 const THUMB = 96;
 
@@ -17,10 +18,10 @@ export const styles = StyleSheet.create({
     gap: 8,
     paddingVertical: 14,
     borderRadius: 12,
-    backgroundColor: '#f0f6fb',
+    backgroundColor: '#fbf0f0ff',
   },
   actionDisabled: { opacity: 0.4 },
-  actionText: { color: '#2f95dc', fontWeight: '600', fontSize: 15 },
+  actionText: { color: palette.primary, fontWeight: '600', fontSize: 15 },
   empty: {
     flex: 1,
     alignItems: 'center',

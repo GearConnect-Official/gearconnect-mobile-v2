@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { palette } from './colors';
 
 export const styles = StyleSheet.create({
   bar: {
@@ -11,7 +12,7 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#e5e5e5',
   },
   right: {
-    color: '#2f95dc',
+    color: palette.primary,
     fontSize: 16,
     fontWeight: '700',
   },
