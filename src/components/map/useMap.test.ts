@@ -20,8 +20,11 @@ test('permission accordée', async () => {
   (getEventsNearby as jest.Mock).mockResolvedValue([
     {
       id: '1',
-      title: 'Course Monaco',
+      name: 'Course Monaco',
+      description: '',
       location: { name: 'Circuit de Monaco', latitude: 43.7, longitude: 7.4 },
+      latitude: 43.7,
+      longitude: 7.4,
       date: '2026-07-15T10:00:00Z',
       organizerId: 'user1',
       participantIds: [],
