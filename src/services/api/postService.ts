@@ -1,5 +1,6 @@
+import { File } from 'expo-file-system';
 import { ENV } from '@/config/env';
-import type { CreatePostInput, FeedPost, Post, PostsPage, SelectedMedia } from '@/types/post.types';
+import type { CreatePostInput, FeedPost, Post, PostsPage } from '@/types/post.types';
 import type { CurrentUser } from '@/types/user.types';
 
 const BASE = ENV.apiUrl;
@@ -109,16 +110,6 @@ export async function getCurrentUser(token: string): Promise<CurrentUser> {
   };
 }
 
-/** Construit l'objet fichier RN ({ uri, name, type }) attendu par FormData. */
-function toFormFile(media: SelectedMedia) {
-  const ext =
-    media.uri.split('.').pop()?.split('?')[0]?.toLowerCase() ??
-    (media.type === 'VIDEO' ? 'mp4' : 'jpg');
-  const name = `upload.${ext}`;
-  const type = media.type === 'VIDEO' ? `video/${ext}` : `image/${ext === 'jpg' ? 'jpeg' : ext}`;
-  return { uri: media.uri, name, type };
-}
-
 /**
  * Crée un post. Les fichiers sont envoyés en multipart au backend, qui les
  * uploade lui-même vers Cloudinary (le front ne parle qu'à l'API).
@@ -128,8 +119,9 @@ export async function createPost(input: CreatePostInput, token: string): Promise
   form.append('body', input.body);
   form.append('userId', String(input.userId));
   for (const m of input.media) {
-    // RN's FormData accepts { uri, name, type } objects, not actual Blobs.
-    form.append('media', toFormFile(m) as unknown as Blob);
+    // expo/fetch (fetch global depuis SDK 57) lit le contenu via File.bytes() ;
+    // les objets RN { uri, name, type } ne sont plus acceptés.
+    form.append('media', new File(m.uri));
   }
 
   const res = await fetch(`${BASE}/posts`, {

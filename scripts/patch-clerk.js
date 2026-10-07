@@ -13,20 +13,20 @@
 const fs = require('node:fs');
 const path = require('node:path');
 
-const SPECS_DIR = path.join(
-  __dirname,
-  '..',
-  'node_modules',
-  '@clerk',
-  'expo',
-  'dist',
-  'specs',
-);
+const SPECS_DIR = path.join(__dirname, '..', 'node_modules', '@clerk', 'expo', 'dist', 'specs');
 
 /** Specs Android à rendre non-fatals : fichier + nom du module natif requis. */
 const TARGETS = [
-  { file: 'NativeClerkModule.android.js', name: 'ClerkExpo', varName: 'NativeClerkModule_android_default' },
-  { file: 'NativeClerkGoogleSignIn.android.js', name: 'ClerkGoogleSignIn', varName: 'NativeClerkGoogleSignIn_android_default' },
+  {
+    file: 'NativeClerkModule.android.js',
+    name: 'ClerkExpo',
+    varName: 'NativeClerkModule_android_default',
+  },
+  {
+    file: 'NativeClerkGoogleSignIn.android.js',
+    name: 'ClerkGoogleSignIn',
+    varName: 'NativeClerkGoogleSignIn_android_default',
+  },
 ];
 
 function patchFile({ file, name, varName }) {

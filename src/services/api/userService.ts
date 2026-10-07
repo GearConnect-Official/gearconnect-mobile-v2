@@ -1,3 +1,4 @@
+import { File } from 'expo-file-system';
 import { ENV } from '@/config/env';
 import type { SelectedMedia } from '@/types/post.types';
 import type { UpdateProfileInput, UserProfile } from '@/types/user.types';
@@ -52,14 +53,6 @@ export async function updateProfile(
   return toUserProfile(data.user);
 }
 
-/** Construit l'objet fichier RN ({ uri, name, type }) attendu par FormData. */
-function toFormFile(media: SelectedMedia) {
-  const ext = media.uri.split('.').pop()?.split('?')[0]?.toLowerCase() ?? 'jpg';
-  const name = `avatar.${ext}`;
-  const type = `image/${ext === 'jpg' ? 'jpeg' : ext}`;
-  return { uri: media.uri, name, type };
-}
-
 /**
  * Envoie une nouvelle photo de profil (multipart) : le back l'uploade vers
  * Cloudinary (POST /users/:id/profile-picture-cloudinary) et renvoie le profil à jour.
@@ -70,8 +63,8 @@ export async function uploadProfilePicture(
   token: string,
 ): Promise<UserProfile> {
   const form = new FormData();
-  // RN's FormData accepts { uri, name, type } objects, not actual Blobs.
-  form.append('profilePicture', toFormFile(media) as unknown as Blob);
+  // les objets RN { uri, name, type } ne sont plus acceptés.
+  form.append('profilePicture', new File(media.uri));
 
   const res = await fetch(`${BASE}/users/${userId}/profile-picture-cloudinary`, {
     method: 'POST',
