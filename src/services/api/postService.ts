@@ -61,6 +61,53 @@ export async function getPostById(
   const data: Post = await res.json();
   return toFeedPost(data, currentUserId);
 }
+/** Réponse brute des endpoints profil (/posts/user/:id, /posts/liked/:id) : posts + méta utilisateur. */
+interface UserPostsResponse {
+  posts: Post[];
+}
+
+/** Normalise une page de posts d'un utilisateur (postés ou likés) en PostsPage. */
+function toUserPostsPage(data: UserPostsResponse, page: number, currentUserId: number): PostsPage {
+  const posts = data.posts ?? [];
+  return {
+    posts: posts.map((p) => toFeedPost(p, currentUserId)),
+    nextPage: posts.length === PAGE_SIZE ? page + 1 : null,
+  };
+}
+
+/** Récupère une page des posts publiés par un utilisateur (GET /posts/user/:userId). */
+export async function getUserPosts(
+  userId: number,
+  currentUserId: number,
+  page: number,
+  token: string,
+): Promise<PostsPage> {
+  const res = await fetch(
+    `${BASE}/posts/user/${userId}?page=${page}&limit=${PAGE_SIZE}&currentUserId=${currentUserId}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  if (!res.ok) {
+    throw new Error('Impossible de charger les publications.');
+  }
+  return toUserPostsPage(await res.json(), page, currentUserId);
+}
+
+/** Récupère une page des posts likés par un utilisateur (GET /posts/liked/:userId). */
+export async function getLikedPosts(
+  userId: number,
+  currentUserId: number,
+  page: number,
+  token: string,
+): Promise<PostsPage> {
+  const res = await fetch(
+    `${BASE}/posts/liked/${userId}?page=${page}&limit=${PAGE_SIZE}&currentUserId=${currentUserId}`,
+    { headers: { Authorization: `Bearer ${token}` } },
+  );
+  if (!res.ok) {
+    throw new Error('Impossible de charger les posts likés.');
+  }
+  return toUserPostsPage(await res.json(), page, currentUserId);
+}
 
 /** Récupère le profil de l'utilisateur connecté (id interne, pseudo, avatar DB) via GET /auth/me. */
 export async function getCurrentUser(token: string): Promise<CurrentUser> {
@@ -68,7 +115,8 @@ export async function getCurrentUser(token: string): Promise<CurrentUser> {
     headers: { Authorization: `Bearer ${token}` },
   });
   if (!res.ok) {
-    throw new Error('Impossible de récupérer le profil utilisateur.');
+    const body = await res.json().catch(() => ({}));
+    throw new Error(`/auth/me ${res.status}: ${body?.error ?? body?.details ?? 'erreur inconnue'}`);
   }
   const data = await res.json();
   return {
