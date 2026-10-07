@@ -15,16 +15,21 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "app.gearconnect",
-      "associatedDomains": ["applinks:gearconnect.app"]
+      "deploymentTarget": "17.0",
+      "bundleIdentifier": "com.anonymous.gearconnectmobilev2",
+      "associatedDomains": ["applinks:gearconnect.app"],
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      }
     },
     "android": {
-      "package": "com.turbotard.gearconnectmobilev2",
+      "package": "com.anonymous.gearconnectmobilev2",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
       "permissions": ["android.permission.RECORD_AUDIO"],
       "intentFilters": [
@@ -58,6 +63,19 @@
       ],
       "expo-video",
       [
+        "expo-maps",
+        {
+          "requestLocationPermission": true,
+          "locationPermission": "Autoriser l'accès à la localisation pour afficher les lieux à proximité."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Autoriser l'accès à la localisation pour afficher les événements à proximité."
+        }
+      ],
+      [
         "expo-build-properties",
         {
           "android": {
@@ -65,6 +83,12 @@
             "packagingOptions": {
               "exclude": ["META-INF/versions/9/OSGI-INF/MANIFEST.MF"]
             }
+          },
+          "ios": {
+            "extraPods": [
+              { "name": "GoogleUtilities", "modular_headers": true },
+              { "name": "RecaptchaInterop", "modular_headers": true }
+            ]
           }
         }
       ],
