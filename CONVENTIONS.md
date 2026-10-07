@@ -100,9 +100,9 @@ Biome est configuré (`biome.json`) et remplace ESLint/Prettier.
 Avant de commit/ouvrir une PR :
 
 ```bash
-npm run format   # corrige automatiquement indentation, quotes, points-virgules...
-npm run lint     # signale le reste (imports inutilisés, any, etc.)
-npm run check    # les deux en une fois (lint + format + organize imports)
+bun run format   # corrige automatiquement indentation, quotes, points-virgules...
+bun run lint     # signale le reste (imports inutilisés, any, etc.)
+bun run check    # les deux en une fois (lint + format + organize imports)
 ```
 
 Les règles ci-dessous sont donc appliquées automatiquement par ces outils,
@@ -204,7 +204,7 @@ mais restent documentées pour comprendre _pourquoi_ le code est formaté ainsi.
   // ... suite, au même niveau d'indentation
   ```
 
-> En cas de doute ou de conflit, c'est `npm run format` / `npm run lint` qui
+> En cas de doute ou de conflit, c'est `bun run format` / `bun run lint` qui
 > font foi.
 
 ---

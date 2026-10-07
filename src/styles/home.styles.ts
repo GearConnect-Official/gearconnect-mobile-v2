@@ -1,36 +1,53 @@
 import { StyleSheet } from 'react-native';
+import { palette } from './colors';
+import { spacing } from './spacing';
+import { typography } from './typography';
 
 export const styles = StyleSheet.create({
-  container: {
+  safe: {
+    flex: 1,
+    backgroundColor: palette.white,
+  },
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  brand: {
+    fontSize: 18,
+    fontWeight: typography.title.fontWeight,
+    color: palette.black,
+  },
+  topActions: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.md,
+  },
+  center: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    padding: spacing.lg,
   },
-  logoutButton: {
-    position: 'absolute',
-    top: 60,
-    right: 20,
+  message: {
+    fontSize: typography.body.fontSize,
+    color: palette.gray500,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
+  retry: {
+    marginTop: spacing.sm,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  retryText: {
+    fontWeight: typography.label.fontWeight,
+    color: palette.primary,
   },
   separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
+    height: spacing.sm,
   },
-  createButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    backgroundColor: '#2f95dc',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 24,
-  },
-  createButtonText: {
-    fontWeight: '600',
-    fontSize: 15,
+  footer: {
+    paddingVertical: spacing.md,
   },
 });
