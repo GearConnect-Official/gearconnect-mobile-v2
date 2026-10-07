@@ -2,9 +2,9 @@ import { FontAwesome } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { Alert, Pressable, ScrollView, Text, View } from 'react-native';
+import { palette } from '@/styles/colors';
 import { styles } from '@/styles/mediaSection.styles';
 import type { MediaType, SelectedMedia } from '@/types/post.types';
-import { palette } from '@/styles/colors';
 
 const MAX_MEDIA = 10;
 
