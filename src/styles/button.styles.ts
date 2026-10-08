@@ -21,6 +21,15 @@ export const buttonStyles = StyleSheet.create({
   disabled: { opacity: 0.5 },
   chevron: { letterSpacing: -2 },
   loading: { justifyContent: 'center' },
-  cutCorner: { position: 'absolute', right: 0, bottom: 0, width: 0, height: 0, borderLeftWidth: 12, borderBottomWidth: 12, borderLeftColor: 'transparent', borderBottomColor: colors.background,
+  cutCorner: {
+    position: 'absolute',
+    right: 0,
+    bottom: 0,
+    width: 0,
+    height: 0,
+    borderLeftWidth: 12,
+    borderBottomWidth: 12,
+    borderLeftColor: 'transparent',
+    borderBottomColor: colors.background,
   },
 });

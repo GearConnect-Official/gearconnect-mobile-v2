@@ -1,8 +1,15 @@
 import { Link } from 'expo-router';
 import { Image, KeyboardAvoidingView, Platform, View } from 'react-native';
-import { Button, Input, Text } from '@/components/ui';
+import { Button, Input, ShiftLights, Text } from '@/components/ui';
 import { authStyles } from '@/styles/auth.styles';
 import { useLoginForm } from './useLoginForm';
+
+function formProgress(email: string, password: string) {
+  let level = 0;
+  if (email.trim().length > 0) level += 2;
+  if (/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) level += 3;
+  return level + Math.min(password.length, 5);
+}
 
 /** Écran de connexion. */
 export default function LoginScreen() {
@@ -28,6 +35,7 @@ export default function LoginScreen() {
             </Text>
           </Text>
         </View>
+        <ShiftLights level={formProgress(email, password)} />
         <View style={authStyles.heading}>
           <Text style={authStyles.title}>Connexion</Text>
           <Text color="textSecondary">Retrouve ton paddock, tes circuits et tes pilotes.</Text>
@@ -56,6 +64,7 @@ export default function LoginScreen() {
           </Link>
         </View>
       </View>
+      <View style={authStyles.stripe} />
     </KeyboardAvoidingView>
   );
 }
