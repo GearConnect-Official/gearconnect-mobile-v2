@@ -1,10 +1,8 @@
-import { useAuth } from '@clerk/expo';
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 import {
   ActivityIndicator,
-  Alert,
   FlatList,
   Pressable,
   RefreshControl,
@@ -21,12 +19,16 @@ import { usePosts } from './usePosts';
 
 const VIEWABILITY_CONFIG = { itemVisiblePercentThreshold: 70, minimumViewTime: 250 };
 
+interface Props {
+  /** Si fourni (lien partagé), ce post est épinglé en tête du feed. */
+  initialPostId?: number;
+}
+
 /** Écran d'accueil : feed des posts (scroll infini + pull-to-refresh). */
-export default function HomeScreen() {
+export default function HomeScreen({ initialPostId }: Props = {}) {
   const router = useRouter();
-  const { signOut } = useAuth();
-  const { posts, loading, refreshing, loadingMore, error, refresh, loadMore, toggleLike } =
-    usePosts();
+  const { posts, loading, refreshing, loadingMore, error, refresh, loadMore, toggleLike, share } =
+    usePosts(initialPostId);
 
   const [activeId, setActiveId] = useState<number | null>(null);
 
@@ -36,8 +38,10 @@ export default function HomeScreen() {
   });
   const viewabilityConfig = useRef(VIEWABILITY_CONFIG);
 
-  const onComment = useCallback(() => Alert.alert('Commentaires', 'Bientôt disponible.'), []);
-  const onShare = useCallback(() => Alert.alert('Partager', 'Bientôt disponible.'), []);
+  const onComment = useCallback(
+    (postId: number) => router.push(`/comments?id=${postId}`),
+    [router],
+  );
 
   const renderItem = useCallback(
     ({ item }: { item: FeedPost }) => (
@@ -46,10 +50,10 @@ export default function HomeScreen() {
         active={item.id === activeId}
         onToggleLike={toggleLike}
         onComment={onComment}
-        onShare={onShare}
+        onShare={share}
       />
     ),
-    [activeId, toggleLike, onComment, onShare],
+    [activeId, toggleLike, onComment, share],
   );
 
   return (
@@ -59,9 +63,6 @@ export default function HomeScreen() {
         <View style={styles.topActions}>
           <Pressable onPress={() => router.push('/publication')} hitSlop={10}>
             <FontAwesome name="plus-square-o" size={24} color={palette.black} />
-          </Pressable>
-          <Pressable onPress={() => signOut()} hitSlop={10}>
-            <FontAwesome name="sign-out" size={22} color={palette.black} />
           </Pressable>
         </View>
       </View>

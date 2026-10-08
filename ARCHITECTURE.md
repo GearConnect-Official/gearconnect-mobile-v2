@@ -6,6 +6,7 @@
 - **`src/` separé de `app/`** : le routing ne contient pas de logique métier
 - **Ecrans partagés au top level** : `userProfile`, `postDetail` etc. sont accessibles depuis partout sans navigation cross-group
 - **Nesting max 2 niveaux** dans `app/` pour rester navigable
+- **Exception deep links** : une route dont l'URL doit correspondre à un lien public (ex. `post/[id].tsx` ↔ `https://gearconnect.app/post/:id`, déclaré dans `app.json` via `intentFilters` / `associatedDomains`) peut utiliser un segment dynamique. Elle reste un wrapper léger : la lecture du paramètre se fait dans le composant `src/` (ex. `SharedPostScreen`)
 
 ---
 
@@ -39,6 +40,9 @@ gearconnect-mobile-v2/
 │       │   # --- Ecrans partagés (accessibles depuis n'importe quel tab) ---
 │       ├── userProfile.tsx                # Profil utilisateur (accédé depuis 14+ endroits)
 │       ├── postDetail.tsx                 # Détail d'un post
+│       ├── comments.tsx                   # Commentaires d'un post (/comments?id=:postId)
+│       ├── post/
+│       │   └── [id].tsx                   # Deep link d'un post partagé (gearconnect.app/post/:id)
 │       ├── userSearch.tsx                 # Recherche utilisateurs
 │       ├── publication.tsx                # Création de publication
 │       ├── verify.tsx                     # Vérification
@@ -67,6 +71,7 @@ gearconnect-mobile-v2/
 │       ├── editProfile.tsx                # Modifier son profil
 │       ├── followList.tsx                 # Liste followers/following
 │       ├── settings.tsx                   # Paramètres
+│       ├── accountReactivation.tsx        # Compte en cours de suppression : réactiver ou se déconnecter
 │       ├── privacySettings.tsx            # Paramètres de confidentialité
 │       ├── notificationSettings.tsx       # Paramètres de notifications
 │       ├── permissions.tsx                # Permissions
@@ -99,15 +104,28 @@ gearconnect-mobile-v2/
 │   │   │   └── index.ts
 │   │   │
 │   │   ├── feed/                          # Composants du fil d'actualité
+│   │   │   ├── HomeScreen.tsx             # Feed (scroll infini, post épinglé optionnel)
+│   │   │   ├── SharedPostScreen.tsx       # Lit l'id du deep link -> HomeScreen avec post épinglé
 │   │   │   ├── PostItem.tsx
+│   │   │   ├── MediaCarousel.tsx
 │   │   │   ├── PostHeader.tsx
 │   │   │   ├── PostFooter.tsx
-│   │   │   ├── PostActions.tsx
 │   │   │   ├── PostOptionsMenu.tsx
-│   │   │   ├── HierarchicalComment.tsx
-│   │   │   ├── ShareModal.tsx
 │   │   │   ├── ProfilePost.tsx
-│   │   │   └── index.ts
+│   │   │   ├── usePosts.ts                # Logique : feed paginé, like, partage
+│   │   │   ├── comments/                  # Sous-feature commentaires (écran dédié, pas de modale)
+│   │   │   │   ├── CommentsScreen.tsx
+│   │   │   │   ├── CommentItem.tsx        # Commentaire + réponses imbriquées
+│   │   │   │   ├── useComments.ts         # Logique : liste paginée, ajout, réponse, like, suppression
+│   │   │   │   └── index.ts
+│   │   │   ├── likes/                     # Like générique (post, commentaire)
+│   │   │   │   ├── LikeButton.tsx
+│   │   │   │   ├── likeState.ts           # Fonction pure : état suivant d'un like
+│   │   │   │   └── index.ts
+│   │   │   ├── shares/                    # Partage (événement, pas un toggle)
+│   │   │   │   ├── ShareButton.tsx
+│   │   │   │   └── index.ts
+│   │   │   └── index.ts                   # Ré-exporte aussi les sous-dossiers comments/likes/shares
 │   │   │
 │   │   ├── stories/                       # Composants stories
 │   │   │   ├── StoryPreview.tsx
@@ -115,12 +133,17 @@ gearconnect-mobile-v2/
 │   │   │   └── index.ts
 │   │   │
 │   │   ├── profile/                       # Composants profil
+│   │   │   ├── AccountReactivationScreen.tsx # Réactivation d'un compte en cours de suppression
 │   │   │   ├── ProfileScreen.tsx          # Écran profil (orchestrateur : useProfile + onglets)
 │   │   │   ├── ProfileHeader.tsx          # Photo, pseudo, description, bouton "Modifier"
 │   │   │   ├── ProfileGrid.tsx            # Grille 3 colonnes des posts (publications / likés)
 │   │   │   ├── EditProfileModal.tsx       # Popup : changer photo + description
+│   │   │   ├── ReverificationModal.tsx    # Popup : mot de passe avant une action sensible
+│   │   │   ├── SettingsScreen.tsx         # Paramètres : CGU, confidentialité, déconnexion, suppression
 │   │   │   ├── useProfile.ts              # Logique : profil + posts/likés paginés
 │   │   │   ├── useEditProfile.ts          # Logique : édition photo + description
+│   │   │   ├── useAccountReactivation.ts  # Logique : date de suppression prévue, réactivation
+│   │   │   ├── useDeleteAccount.ts        # Logique : confirmation, vérif. d'identité, suppression du compte
 │   │   │   └── index.ts
 │   │   │
 │   │   ├── events/                        # Composants événements
@@ -158,8 +181,6 @@ gearconnect-mobile-v2/
 │   │   │   └── index.ts
 │   │   │
 │   │   └── modals/                        # Modales partagées
-│   │       ├── CommentsModal.tsx
-│   │       ├── HierarchicalCommentsModal.tsx
 │   │       ├── StoryModal.tsx
 │   │       └── index.ts
 │   │
@@ -199,6 +220,7 @@ gearconnect-mobile-v2/
 │   │   │   ├── postService.ts
 │   │   │   ├── privacySettingsService.ts
 │   │   │   ├── relatedProductService.ts
+│   │   │   ├── shareService.ts            # Enregistre un partage (POST /shares)
 │   │   │   ├── tagService.ts
 │   │   │   ├── userService.ts
 │   │   │   └── verificationService.ts
@@ -210,6 +232,7 @@ gearconnect-mobile-v2/
 │   │
 │   ├── types/                             # Types TypeScript
 │   │   ├── api.types.ts
+│   │   ├── comment.types.ts
 │   │   ├── event.types.ts
 │   │   ├── follow.types.ts
 │   │   ├── group.types.ts
@@ -233,7 +256,8 @@ gearconnect-mobile-v2/
 │   │   ├── theme.ts
 │   │   ├── colors.ts
 │   │   ├── typography.ts
-│   │   └── spacing.ts
+│   │   ├── spacing.ts
+│   │   └── sizes.ts                       # radius (coins arrondis) + avatarSize
 │   │
 │   └── config/                            # Configuration app
 │       ├── constants.ts
