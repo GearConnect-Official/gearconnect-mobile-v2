@@ -71,6 +71,7 @@ gearconnect-mobile-v2/
 │       ├── editProfile.tsx                # Modifier son profil
 │       ├── followList.tsx                 # Liste followers/following
 │       ├── settings.tsx                   # Paramètres
+│       ├── accountReactivation.tsx        # Compte en cours de suppression : réactiver ou se déconnecter
 │       ├── privacySettings.tsx            # Paramètres de confidentialité
 │       ├── notificationSettings.tsx       # Paramètres de notifications
 │       ├── permissions.tsx                # Permissions
@@ -132,12 +133,17 @@ gearconnect-mobile-v2/
 │   │   │   └── index.ts
 │   │   │
 │   │   ├── profile/                       # Composants profil
+│   │   │   ├── AccountReactivationScreen.tsx # Réactivation d'un compte en cours de suppression
 │   │   │   ├── ProfileScreen.tsx          # Écran profil (orchestrateur : useProfile + onglets)
 │   │   │   ├── ProfileHeader.tsx          # Photo, pseudo, description, bouton "Modifier"
 │   │   │   ├── ProfileGrid.tsx            # Grille 3 colonnes des posts (publications / likés)
 │   │   │   ├── EditProfileModal.tsx       # Popup : changer photo + description
+│   │   │   ├── ReverificationModal.tsx    # Popup : mot de passe avant une action sensible
+│   │   │   ├── SettingsScreen.tsx         # Paramètres : CGU, confidentialité, déconnexion, suppression
 │   │   │   ├── useProfile.ts              # Logique : profil + posts/likés paginés
 │   │   │   ├── useEditProfile.ts          # Logique : édition photo + description
+│   │   │   ├── useAccountReactivation.ts  # Logique : date de suppression prévue, réactivation
+│   │   │   ├── useDeleteAccount.ts        # Logique : confirmation, vérif. d'identité, suppression du compte
 │   │   │   └── index.ts
 │   │   │
 │   │   ├── events/                        # Composants événements

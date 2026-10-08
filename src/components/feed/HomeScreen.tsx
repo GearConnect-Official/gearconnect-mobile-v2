@@ -1,4 +1,3 @@
-import { useAuth } from '@clerk/expo';
 import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
@@ -28,7 +27,6 @@ interface Props {
 /** Écran d'accueil : feed des posts (scroll infini + pull-to-refresh). */
 export default function HomeScreen({ initialPostId }: Props = {}) {
   const router = useRouter();
-  const { signOut } = useAuth();
   const { posts, loading, refreshing, loadingMore, error, refresh, loadMore, toggleLike, share } =
     usePosts(initialPostId);
 
@@ -65,9 +63,6 @@ export default function HomeScreen({ initialPostId }: Props = {}) {
         <View style={styles.topActions}>
           <Pressable onPress={() => router.push('/publication')} hitSlop={10}>
             <FontAwesome name="plus-square-o" size={24} color={palette.black} />
-          </Pressable>
-          <Pressable onPress={() => signOut()} hitSlop={10}>
-            <FontAwesome name="sign-out" size={22} color={palette.black} />
           </Pressable>
         </View>
       </View>
