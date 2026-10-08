@@ -6,14 +6,16 @@ import { palette } from '@/styles/colors';
 import { styles } from '@/styles/postItem.styles';
 import type { FeedPost } from '@/types/post.types';
 import { withCloudinaryAuto } from '@/utils/mediaUtils';
+import { LikeButton } from './likes';
 import MediaCarousel from './MediaCarousel';
+import { ShareButton } from './shares';
 
 interface Props {
   post: FeedPost;
   active?: boolean;
   onToggleLike: (postId: number) => void;
   onComment?: (postId: number) => void;
-  onShare?: (postId: number) => void;
+  onShare: (postId: number) => void;
   onOpenProfile?: (userId: number) => void;
 }
 
@@ -26,7 +28,7 @@ function PostItem({
   onShare,
   onOpenProfile,
 }: Props) {
-  const { author, media, body, likeCount, commentCount, likedByMe } = post;
+  const { author, media, body, likeCount, commentCount, shareCount, likedByMe } = post;
 
   return (
     <View style={styles.card}>
@@ -56,23 +58,14 @@ function PostItem({
       <MediaCarousel items={media.map((m) => ({ uri: m.url, type: m.type }))} active={active} />
 
       <View style={styles.actions}>
-        <Pressable style={styles.action} onPress={() => onToggleLike(post.id)} hitSlop={8}>
-          <FontAwesome
-            name={likedByMe ? 'heart' : 'heart-o'}
-            size={20}
-            color={likedByMe ? palette.primary : palette.black}
-          />
-          {likeCount > 0 && <Text style={styles.actionCount}>{likeCount}</Text>}
-        </Pressable>
+        <LikeButton liked={likedByMe} count={likeCount} onPress={() => onToggleLike(post.id)} />
 
         <Pressable style={styles.action} onPress={() => onComment?.(post.id)} hitSlop={8}>
           <FontAwesome name="comment-o" size={20} color={palette.black} />
           {commentCount > 0 && <Text style={styles.actionCount}>{commentCount}</Text>}
         </Pressable>
 
-        <Pressable style={styles.action} onPress={() => onShare?.(post.id)} hitSlop={8}>
-          <FontAwesome name="share" size={20} color={palette.black} />
-        </Pressable>
+        <ShareButton count={shareCount} onPress={() => onShare(post.id)} />
       </View>
 
       {body.length > 0 && <Text style={styles.body}>{body}</Text>}
