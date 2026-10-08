@@ -61,8 +61,10 @@ export function usePosts(initialPostId?: number) {
           try {
             const pinned = await getPostById(initialPostId, userId, token);
             pagePosts = [pinned, ...pagePosts.filter((p) => p.id !== pinned.id)];
-          } catch {
-            // Post partagé introuvable/supprimé : on affiche simplement le feed normal.
+          } catch (e) {
+            // Le feed s'affiche quand même ; on prévient juste que le post partagé n'a pas pu être ouvert.
+            if (__DEV__) console.warn('[usePosts] post partagé', initialPostId, e);
+            Alert.alert('Post indisponible', "Ce post n'existe plus ou n'a pas pu être chargé.");
           }
         }
 

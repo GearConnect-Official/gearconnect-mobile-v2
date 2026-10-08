@@ -1,5 +1,5 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
-import { Share } from 'react-native';
+import { Alert, Share } from 'react-native';
 import type { FeedPost } from '@/types/post.types';
 import { usePosts } from './usePosts';
 
@@ -8,11 +8,13 @@ jest.mock('@clerk/expo', () => ({
 }));
 
 const mockGetPosts = jest.fn();
+const mockGetPostById = jest.fn();
 const mockToggleLike = jest.fn();
 const mockCreateShare = jest.fn();
 jest.mock('@/services/api/postService', () => ({
   getCurrentUser: async () => ({ id: 1, username: 'me', profilePicture: null }),
   getPosts: (...args: unknown[]) => mockGetPosts(...args),
+  getPostById: (...args: unknown[]) => mockGetPostById(...args),
 }));
 jest.mock('@/services/api/interactionService', () => ({
   toggleLike: (...args: unknown[]) => mockToggleLike(...args),
@@ -37,6 +39,7 @@ function post(id: number, likedByMe = false, likeCount = 0, shareCount = 0): Fee
 
 beforeEach(() => {
   mockGetPosts.mockReset();
+  mockGetPostById.mockReset();
   mockToggleLike.mockReset();
   mockCreateShare.mockReset();
   // Par défaut, la popup native renvoie "partagé".
@@ -127,4 +130,30 @@ test('partage : rollback du compteur si l’API échoue', async () => {
   });
 
   expect(result.current.posts[0].shareCount).toBe(2);
+});
+
+test('lien partagé : épingle le post en tête sans doublon', async () => {
+  mockGetPosts.mockResolvedValue({ posts: [post(1), post(5), post(2)], nextPage: null });
+  mockGetPostById.mockResolvedValue(post(5));
+
+  const { result } = await renderHook(() => usePosts(5));
+
+  await waitFor(() => expect(result.current.loading).toBe(false));
+  expect(result.current.posts.map((p) => p.id)).toEqual([5, 1, 2]);
+});
+
+test('lien partagé : affiche une alerte si le post est introuvable et charge quand même le feed', async () => {
+  mockGetPosts.mockResolvedValue({ posts: [post(1), post(2)], nextPage: null });
+  mockGetPostById.mockRejectedValue(new Error('404'));
+  const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => {});
+  const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+  const { result } = await renderHook(() => usePosts(99));
+
+  await waitFor(() => expect(result.current.loading).toBe(false));
+  expect(result.current.posts.map((p) => p.id)).toEqual([1, 2]);
+  expect(alertSpy).toHaveBeenCalledWith('Post indisponible', expect.any(String));
+
+  alertSpy.mockRestore();
+  warnSpy.mockRestore();
 });
