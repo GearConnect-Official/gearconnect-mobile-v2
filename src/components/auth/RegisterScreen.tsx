@@ -10,7 +10,7 @@ import {
   View,
 } from 'react-native';
 import { authStyles } from '@/styles/auth.styles';
-import { palette } from '@/styles/colors';
+import { colors } from '@/styles/colors';
 import { useRegisterForm } from './useRegisterForm';
 
 /** Écran d'inscription en 2 étapes : création du compte puis vérification du code. */
@@ -49,7 +49,7 @@ export default function RegisterScreen() {
               value={code}
               onChangeText={setCode}
               placeholder="Code reçu par email"
-              placeholderTextColor={palette.gray500}
+              placeholderTextColor={colors.textMuted}
               keyboardType="number-pad"
               style={authStyles.input}
             />
@@ -89,7 +89,7 @@ export default function RegisterScreen() {
             value={username}
             onChangeText={setUsername}
             placeholder="Pseudo"
-            placeholderTextColor={palette.gray500}
+            placeholderTextColor={colors.textMuted}
             autoCapitalize="none"
             style={authStyles.input}
           />
@@ -97,7 +97,7 @@ export default function RegisterScreen() {
             value={email}
             onChangeText={setEmail}
             placeholder="Email"
-            placeholderTextColor={palette.gray500}
+            placeholderTextColor={colors.textMuted}
             autoCapitalize="none"
             keyboardType="email-address"
             style={authStyles.input}
@@ -106,7 +106,7 @@ export default function RegisterScreen() {
             value={password}
             onChangeText={setPassword}
             placeholder="Mot de passe"
-            placeholderTextColor={palette.gray500}
+            placeholderTextColor={colors.textMuted}
             secureTextEntry
             style={authStyles.input}
           />
@@ -119,7 +119,7 @@ export default function RegisterScreen() {
             <Text style={authStyles.buttonText}>{isBusy ? 'Inscription…' : "S'inscrire"}</Text>
           </Pressable>
           <View style={authStyles.linkRow}>
-            <Text>Déjà un compte ?</Text>
+            <Text style={authStyles.hintText}>Déjà un compte ?</Text>
             <Link href="/(auth)/login">
               <Text style={authStyles.linkText}> Se connecter</Text>
             </Link>

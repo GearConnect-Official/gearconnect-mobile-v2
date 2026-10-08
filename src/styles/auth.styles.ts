@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
-import { palette } from '@/styles/colors';
+import { colors } from '@/styles/colors';
 import { spacing } from '@/styles/spacing';
-import { typography } from '@/styles/typography';
+import { textStyles, typography } from '@/styles/typography';
 
 export const authStyles = StyleSheet.create({
   container: {
@@ -9,13 +9,13 @@ export const authStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: spacing.lg,
-    backgroundColor: palette.gray100,
+    backgroundColor: colors.background,
   },
   // Variante scrollable : carte centrée quand le contenu tient, défilable
   // quand le clavier réduit la place (sinon le bas du formulaire est masqué).
   flex: {
     flex: 1,
-    backgroundColor: palette.gray100,
+    backgroundColor: colors.background,
   },
   scrollContent: {
     flexGrow: 1,
@@ -29,12 +29,7 @@ export const authStyles = StyleSheet.create({
     gap: spacing.md,
     padding: spacing.lg,
     borderRadius: 16,
-    backgroundColor: palette.white,
-    shadowColor: palette.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 3,
+    backgroundColor: 'transparent',
   },
   logo: {
     width: 160,
@@ -43,22 +38,22 @@ export const authStyles = StyleSheet.create({
     marginBottom: spacing.xl,
   },
   title: {
-    ...typography.title,
-    color: palette.gray900,
+    ...textStyles.display,
+    color: colors.textPrimary,
     textAlign: 'center',
     marginBottom: spacing.xs,
   },
   input: {
     borderWidth: 1,
-    borderColor: palette.gray200,
+    borderColor: colors.border,
     borderRadius: 8,
     padding: spacing.md,
     fontSize: typography.body.fontSize,
-    color: palette.gray900,
-    backgroundColor: palette.gray100,
+    color: colors.textPrimary,
+    backgroundColor: colors.surface1,
   },
   button: {
-    backgroundColor: palette.primary,
+    backgroundColor: colors.accent,
     borderRadius: 8,
     paddingVertical: spacing.md,
     alignItems: 'center',
@@ -69,11 +64,11 @@ export const authStyles = StyleSheet.create({
   },
   buttonText: {
     ...typography.label,
-    color: palette.white,
+    color: colors.onAccent,
   },
   errorText: {
     ...typography.body,
-    color: palette.error,
+    color: colors.danger,
     textAlign: 'center',
   },
   linkRow: {
@@ -83,6 +78,10 @@ export const authStyles = StyleSheet.create({
   },
   linkText: {
     ...typography.label,
-    color: palette.primary,
+    color: colors.textPrimary,
+  },
+  hintText: {
+    ...textStyles.body,
+    color: colors.textSecondary,
   },
 });
