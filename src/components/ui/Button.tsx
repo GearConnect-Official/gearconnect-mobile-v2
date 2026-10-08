@@ -1,4 +1,4 @@
-import { ActivityIndicator, Pressable } from 'react-native';
+import { ActivityIndicator, Pressable, View } from 'react-native';
 import { buttonStyles } from '@/styles/button.styles';
 import { colors } from '@/styles/colors';
 import Text from './Text';
@@ -40,15 +40,24 @@ export default function Button({
         buttonStyles[variant],
         pressed && pressedStyles[variant],
         isDisabled && buttonStyles.disabled,
+        loading && buttonStyles.loading,
       ]}
     >
       {loading ? (
         <ActivityIndicator color={colors[textColor]} />
       ) : (
-        <Text variant="button" color={textColor}>
-          {label}
-        </Text>
+        <>
+          <Text variant="button" color={textColor}>
+            {label}
+          </Text>
+          {variant === 'primary' && (
+            <Text variant="button" color={textColor} style={buttonStyles.chevron}>
+              ›››
+            </Text>
+          )}
+        </>
       )}
+      {variant === 'primary' && <View style={buttonStyles.cutCorner} />}
     </Pressable>
   );
 }

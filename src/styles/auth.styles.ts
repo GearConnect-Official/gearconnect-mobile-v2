@@ -40,8 +40,6 @@ export const authStyles = StyleSheet.create({
   title: {
     ...textStyles.display,
     color: colors.textPrimary,
-    textAlign: 'center',
-    marginBottom: spacing.xs,
   },
   input: {
     borderWidth: 1,
@@ -67,7 +65,7 @@ export const authStyles = StyleSheet.create({
     color: colors.onAccent,
   },
   errorText: {
-    ...typography.body,
+    ...textStyles.body,
     color: colors.danger,
     textAlign: 'center',
   },
@@ -75,13 +73,31 @@ export const authStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: spacing.xs,
+    paddingTop: spacing.md,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
   },
   linkText: {
-    ...typography.label,
+    ...textStyles.label,
     color: colors.textPrimary,
+    textDecorationLine: 'underline',
+    textDecorationColor: colors.accent,
   },
   hintText: {
     ...textStyles.body,
     color: colors.textSecondary,
+  },
+  brandRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginBottom: spacing.lg,
+  },
+  brandLogo: {
+    width: 40,
+    height: 40,
+  },
+  heading: {
+    gap: spacing.xs,
   },
 });

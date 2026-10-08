@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
-import { Image, KeyboardAvoidingView, Platform, Text, View } from 'react-native';
-import { Button, Input } from '@/components/ui';
+import { Image, KeyboardAvoidingView, Platform, View } from 'react-native';
+import { Button, Input, Text } from '@/components/ui';
 import { authStyles } from '@/styles/auth.styles';
 import { useLoginForm } from './useLoginForm';
 
@@ -15,12 +15,23 @@ export default function LoginScreen() {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
       <View style={authStyles.card}>
-        <Image
-          source={require('../../../assets/images/Logo GearConnect.png')}
-          style={authStyles.logo}
-          resizeMode="contain"
-        />
-        <Text style={authStyles.title}>Connexion</Text>
+        <View style={authStyles.brandRow}>
+          <Image
+            source={require('../../../assets/images/Logo GearConnect.png')}
+            style={authStyles.brandLogo}
+            resizeMode="contain"
+          />
+          <Text variant="title">
+            Gear
+            <Text variant="title" color="accent">
+              Connect
+            </Text>
+          </Text>
+        </View>
+        <View style={authStyles.heading}>
+          <Text style={authStyles.title}>Connexion</Text>
+          <Text color="textSecondary">Retrouve ton paddock, tes circuits et tes pilotes.</Text>
+        </View>
         <Input
           label="Email"
           value={email}
