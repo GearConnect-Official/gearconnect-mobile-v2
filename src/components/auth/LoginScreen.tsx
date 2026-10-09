@@ -1,6 +1,6 @@
 import { Link } from 'expo-router';
 import { Image, KeyboardAvoidingView, Platform, View } from 'react-native';
-import { Button, Input, ShiftLights, Text } from '@/components/ui';
+import { Button, CarbonBackground, Input, ShiftLights, Text } from '@/components/ui';
 import { authStyles } from '@/styles/auth.styles';
 import { useLoginForm } from './useLoginForm';
 
@@ -21,6 +21,7 @@ export default function LoginScreen() {
       style={authStyles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      <CarbonBackground />
       <View style={authStyles.card}>
         <View style={authStyles.brandRow}>
           <Image
