@@ -1,16 +1,7 @@
 import { Link } from 'expo-router';
-import {
-  Image,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { Image, KeyboardAvoidingView, Platform, ScrollView, View } from 'react-native';
+import { Button, CarbonBackground, Input, Text } from '@/components/ui';
 import { authStyles } from '@/styles/auth.styles';
-import { colors } from '@/styles/colors';
 import { useRegisterForm } from './useRegisterForm';
 
 /** Écran d'inscription en 2 étapes : création du compte puis vérification du code. */
@@ -39,31 +30,29 @@ export default function RegisterScreen() {
         style={authStyles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
+        <CarbonBackground />
         <ScrollView
           contentContainerStyle={authStyles.scrollContent}
           keyboardShouldPersistTaps="handled"
         >
           <View style={authStyles.card}>
-            <Text style={authStyles.title}>Vérification</Text>
-            <TextInput
+            <View style={authStyles.heading}>
+              <Text style={authStyles.title}>Vérification</Text>
+              <Text color="textSecondary">Saisis le code reçu par email</Text>
+            </View>
+            <Input
+              label="Code"
               value={code}
               onChangeText={setCode}
-              placeholder="Code reçu par email"
-              placeholderTextColor={colors.textMuted}
+              placeholder="123456"
               keyboardType="number-pad"
-              style={authStyles.input}
             />
             {errorMessage ? <Text style={authStyles.errorText}>{errorMessage}</Text> : null}
             {apiError ? <Text style={authStyles.errorText}>{apiError}</Text> : null}
-            <Pressable
-              onPress={onVerifyPress}
-              disabled={isBusy}
-              style={[authStyles.button, isBusy && authStyles.buttonDisabled]}
-            >
-              <Text style={authStyles.buttonText}>{isBusy ? 'Vérification…' : 'Vérifier'}</Text>
-            </Pressable>
+            <Button label="Vérifier" onPress={onVerifyPress} loading={isBusy} />
           </View>
         </ScrollView>
+        <View style={authStyles.stripe} />
       </KeyboardAvoidingView>
     );
   }
@@ -74,50 +63,53 @@ export default function RegisterScreen() {
       style={authStyles.flex}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      <CarbonBackground />
       <ScrollView
         contentContainerStyle={authStyles.scrollContent}
         keyboardShouldPersistTaps="handled"
       >
         <View style={authStyles.card}>
-          <Image
-            source={require('../../../assets/images/Logo GearConnect.png')}
-            style={authStyles.logo}
-            resizeMode="contain"
-          />
-          <Text style={authStyles.title}>Inscription</Text>
-          <TextInput
+          <View style={authStyles.brandRow}>
+            <Image
+              source={require('../../../assets/images/Logo GearConnect.png')}
+              style={authStyles.brandLogo}
+              resizeMode="contain"
+            />
+            <Text variant="title">
+              Gear
+              <Text variant="title" color="accent">
+                Connect
+              </Text>
+            </Text>
+          </View>
+          <View style={authStyles.heading}>
+            <Text style={authStyles.title}>Inscription</Text>
+            <Text color="textSecondary">Rejoins la communauté du sport auto.</Text>
+          </View>
+          <Input
+            label="Pseudo"
             value={username}
             onChangeText={setUsername}
             placeholder="Pseudo"
-            placeholderTextColor={colors.textMuted}
             autoCapitalize="none"
-            style={authStyles.input}
           />
-          <TextInput
+          <Input
+            label="Email"
             value={email}
             onChangeText={setEmail}
-            placeholder="Email"
-            placeholderTextColor={colors.textMuted}
+            placeholder="pilote@gearconnect.fr"
             autoCapitalize="none"
             keyboardType="email-address"
-            style={authStyles.input}
           />
-          <TextInput
+          <Input
+            label="Mot de passe"
             value={password}
             onChangeText={setPassword}
-            placeholder="Mot de passe"
-            placeholderTextColor={colors.textMuted}
+            placeholder="*********"
             secureTextEntry
-            style={authStyles.input}
           />
           {errorMessage ? <Text style={authStyles.errorText}>{errorMessage}</Text> : null}
-          <Pressable
-            onPress={onSignUpPress}
-            disabled={isBusy}
-            style={[authStyles.button, isBusy && authStyles.buttonDisabled]}
-          >
-            <Text style={authStyles.buttonText}>{isBusy ? 'Inscription…' : "S'inscrire"}</Text>
-          </Pressable>
+          <Button label={"S'inscrire"} onPress={onSignUpPress} loading={isBusy} />
           <View style={authStyles.linkRow}>
             <Text style={authStyles.hintText}>Déjà un compte ?</Text>
             <Link href="/(auth)/login">
@@ -126,6 +118,7 @@ export default function RegisterScreen() {
           </View>
         </View>
       </ScrollView>
+      <View style={authStyles.stripe} />
     </KeyboardAvoidingView>
   );
 }

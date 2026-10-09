@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { colors } from '@/styles/colors';
 import { spacing } from '@/styles/spacing';
-import { textStyles, typography } from '@/styles/typography';
+import { textStyles } from '@/styles/typography';
 
 export const authStyles = StyleSheet.create({
   container: {
@@ -31,38 +31,9 @@ export const authStyles = StyleSheet.create({
     borderRadius: 16,
     backgroundColor: 'transparent',
   },
-  logo: {
-    width: 160,
-    height: 160,
-    alignSelf: 'center',
-    marginBottom: spacing.xl,
-  },
   title: {
     ...textStyles.display,
     color: colors.textPrimary,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: colors.border,
-    borderRadius: 8,
-    padding: spacing.md,
-    fontSize: typography.body.fontSize,
-    color: colors.textPrimary,
-    backgroundColor: colors.surface1,
-  },
-  button: {
-    backgroundColor: colors.accent,
-    borderRadius: 8,
-    paddingVertical: spacing.md,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonDisabled: {
-    opacity: 0.6,
-  },
-  buttonText: {
-    ...typography.label,
-    color: colors.onAccent,
   },
   errorText: {
     ...textStyles.body,
