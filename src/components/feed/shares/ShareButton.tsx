@@ -9,10 +9,7 @@ interface Props {
   size?: number;
 }
 
-/**
- * Bouton partage : icône + compteur. Le partage est un événement (pas un toggle),
- * donc l'icône reste neutre quel que soit l'état — comme le bouton commentaire.
- */
+/** Bouton partage : icône neutre (un partage est un événement, pas un toggle) + compteur. */
 export default function ShareButton({ count, onPress, size = 20 }: Props) {
   return (
     <Pressable style={styles.button} onPress={onPress} hitSlop={8}>
