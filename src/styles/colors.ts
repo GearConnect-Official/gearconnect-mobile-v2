@@ -27,5 +27,5 @@ export const palette = {
   gray200: '#EFEFEF',
   gray100: '#FAFAFA',
   error: '#ED4956',
-  overlay: 'rgba(0, 0, 0, 0.4)',
+  overlay: '#00000066',
 };
