@@ -19,7 +19,7 @@ test('permission accordée', async () => {
   });
   (getEventsNearby as jest.Mock).mockResolvedValue([
     {
-      id: '1',
+      id: 1,
       name: 'Course Monaco',
       description: '',
       location: { name: 'Circuit de Monaco', latitude: 43.7, longitude: 7.4 },
@@ -37,7 +37,13 @@ test('permission accordée', async () => {
   expect(result.current.cameraPosition.coordinates).toEqual({ latitude: 48.0, longitude: 2.0 });
   expect(result.current.isLoading).toBe(false);
   expect(result.current.markers).toEqual([
-    { id: '1', latitude: 43.7, longitude: 7.4, title: 'Course Monaco' },
+    {
+      id: '1',
+      latitude: 43.7,
+      longitude: 7.4,
+      title: 'Course Monaco',
+      distanceKm: expect.any(Number),
+    },
   ]);
 });
 
@@ -67,4 +73,30 @@ test('permission accordée — aucun event nearby', async () => {
 
   expect(result.current.markers).toEqual([]);
   expect(result.current.isLoading).toBe(false);
+});
+
+test('selectedmarkerId est null patdéfaut', async () => {
+  (requestForegroundPermissionsAsync as jest.Mock).mockResolvedValue({ status: 'denied' });
+
+  const { result } = await renderHook(() => useMap());
+  await act(async () => {});
+
+  expect(result.current.selectedMarkerId).toBe(null);
+});
+
+test('setSlectedMarkerId met à jour selectedMarkerId', async () => {
+  (requestForegroundPermissionsAsync as jest.Mock).mockResolvedValue({ status: 'denied' });
+
+  const { result } = await renderHook(() => useMap());
+  await act(async () => {});
+
+  await act(() => {
+    result.current.setSelectedMarkerId('42');
+  });
+  expect(result.current.selectedMarkerId).toBe('42');
+
+  await act(() => {
+    result.current.setSelectedMarkerId(null);
+  });
+  expect(result.current.selectedMarkerId).toBe(null);
 });
