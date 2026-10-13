@@ -59,6 +59,7 @@ export default function MapScreen({ onSelectionChange }: Props) {
           style={styles.map}
           cameraPosition={cameraPosition}
           markers={toAppleMarkers(markers)}
+          properties={{ isMyLocationEnabled: true }}
           onMarkerClick={(marker) => {
             if (marker.id) setSelectedMarkerId(marker.id);
           }}
@@ -68,6 +69,7 @@ export default function MapScreen({ onSelectionChange }: Props) {
           style={styles.map}
           cameraPosition={cameraPosition}
           markers={toGoogleMarkers(markers)}
+          properties={{ isMyLocationEnabled: true }}
           onMarkerClick={(marker) => {
             if (marker.id) setSelectedMarkerId(marker.id);
           }}
