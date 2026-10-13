@@ -9,6 +9,7 @@ type ActiveView = 'map' | 'list';
 
 /** Écran principal des événements avec toggle carte / liste. */
 export default function EventsScreen() {
+  const [hasMapSelection, setHasMapSelection] = useState(false);
   const [view, setView] = useState<ActiveView>('map');
   const router = useRouter();
 
@@ -31,11 +32,13 @@ export default function EventsScreen() {
         </TouchableOpacity>
       </View>
 
-      {view === 'map' ? <MapScreen /> : <EventListScreen />}
+      {view === 'map' ? <MapScreen onSelectionChange={setHasMapSelection} /> : <EventListScreen />}
 
-      <TouchableOpacity style={styles.fab} onPress={() => router.push('/createEvent')}>
-        <Text style={styles.fabText}>+</Text>
-      </TouchableOpacity>
+      {!hasMapSelection && (
+        <TouchableOpacity style={styles.fab} onPress={() => router.push('/createEvent')}>
+          <Text style={styles.fabText}>+</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 }

@@ -8,4 +8,5 @@ export type Event = {
   date: string;
   organizerId: string;
   participantIds: number[];
+  distanceKm: number;
 };
