@@ -1,4 +1,5 @@
 import { FontAwesome } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { ActivityIndicator, Pressable, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -26,6 +27,7 @@ export default function ProfileScreen() {
     reloadProfile,
   } = useProfile();
   const [editing, setEditing] = useState(false);
+  const router = useRouter();
 
   if (loading) {
     return (
@@ -64,6 +66,9 @@ export default function ProfileScreen() {
     <SafeAreaView style={styles.safe} edges={['top']}>
       <View style={styles.topBar}>
         <Text style={styles.topUsername}>{profile.username}</Text>
+        <Pressable onPress={() => router.push('/settings')} hitSlop={10}>
+          <FontAwesome name="cog" size={20} color={palette.black} />
+        </Pressable>
       </View>
 
       <ProfileGrid
